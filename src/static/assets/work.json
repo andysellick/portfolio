@@ -144,8 +144,7 @@
 		},
 		{
 			"jobname"		:	"Savoy Website",
-			"desc"			:	"<p>London's world-famous Savoy hotel wanted help with modernising and streamlining their website with a complete redesign. The new design needed to stay true to The Savoy's prestigious personality while implementing cutting-edge design and user experience principles.</p><p>The result was a truly custom design produced just for The Savoy and its customers, that sadly never saw the light of day.</p>",
-			"devURL"		:	"http://dev.seogadget.com/clients/thesavoy/",
+			"desc"			:	"<p>London's world-famous Savoy hotel wanted help with modernising and streamlining their website with a complete redesign. </p><p>The result was a custom design produced just for the Savoy and its customers, that sadly never saw the light of day.</p>",
 			"moreURL"		:	"http://www.custarddoughnuts.co.uk/article/2016/10/7/building-a-website-for-a-major-hotel",
 			"img"			:	"thesavoy.jpg",
 			"filters"		:	{
@@ -154,7 +153,23 @@
 								"workload"		: 	["Sole developer"],
 								"format"		:	["website"],
 								"year"			:	["2015"],
-								"technology"	:	["jquery"]
+								"technology"	:	["jquery","google maps"]
+							}
+		},
+		{
+			"jobname"		:	"Counts for More",
+			"desc"			:	"Counts for More was designed to connect Walkers with their resellers, through promotions and giveaways.",
+			"liveURL"		:	"https://www.countsformore.co.uk/",
+			"moreURL"		:	"http://www.custarddoughnuts.co.uk/article/2015/11/8/walkers-counts-for-more-rebrand",
+			"img"			:	"walkerscountsformore.jpg",
+			"filters"		:	{
+								"client"		:	["Walkers"],
+								"designer"		:	["Tangent Snowball"],
+								"workload"		: 	["Sole frontend developer"],
+								"format"		:	["website"],
+								"year"			:	["2015"],
+								"technology"	:	["jquery"],
+								"status"		:	["live"]
 							}
 		}
 	]
