@@ -1,0 +1,10 @@
+{
+  "name": "content-library",
+  "version": "0.0.1",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "html5shiv": "~3.7.3",
+    "react": "0.14.0"
+  }
+}

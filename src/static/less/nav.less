@@ -1,0 +1,288 @@
+/* --navigation */
+
+	.mainmenu {
+		padding-top:30px;
+		background:@greyDark;
+
+		.mainfilters {
+			display:table;
+			position:relative;
+			width:100%;
+			.container;
+			.clearfix;
+			.transition( transform @transpeed );
+		}
+		.filteritem {
+			display:table-cell;
+
+			.droptrigger {
+				position:relative;
+				z-index:1;
+				display:block;
+				padding:0.5em 0;
+				text-align:center;
+				.font-montserratlight();
+				color:@white;
+				text-transform:uppercase;
+				font-weight:bold;
+				.fontcalculate(14);
+				cursor:pointer;
+				.noselect();
+
+				.droptriggerinner {
+					display:inline-block;
+					padding-bottom:0.3em;
+					border-bottom:solid 4px @greyDark;
+					.transition( border @transpeed );
+				}
+				&:before,
+				&:after {
+					content:"";
+					display:none;
+					position:absolute;
+					top:0;
+					width:7em;
+					height:100%;
+					//border:solid 1px red;
+				}
+				&:before {
+					right:100%;
+					.transform( rotate(-25deg) );
+					.transform-origin( 100% 0% );
+				}
+				&:after {
+					left:100%;
+					.transform( rotate(25deg) );
+					.transform-origin( 0% 0% );
+				}
+				&:hover {
+					z-index:2;
+					&:before,
+					&:after {
+						display:block;
+					}
+				}
+			}
+			&:first-child {
+				.droptrigger:before {
+					display:none;
+				}
+			}
+			&:nth-last-child(2) {
+				.droptrigger:after {
+					display:none;
+				}
+			}
+
+			.dropcontent {
+				display: -webkit-flex;
+				display: flex;
+				-webkit-flex-wrap: wrap;
+				flex-wrap: wrap;
+				-webkit-flex-direction:column;
+				flex-direction:column;
+				position:absolute;
+				z-index:-1;
+				top:100%;
+				left:0;
+				width:100%;
+				padding:20px 10px;
+				padding-bottom:50px;
+				.border-box;
+				background:@white;
+				border-top:0;
+				.border-radius( 0 0 4px 4px );
+				.box-shadow( 0 2px 7px rgba(0, 0, 0, 0.3) );
+				.transparency( 0 );
+				.transition( opacity @transpeed );
+				
+				.filterlabel {
+					position:relative;
+					display:block;
+					width:100% / 4;
+					padding:0.3em 0.5em;
+					padding-left:20px;
+					.border-box;
+					cursor:pointer;
+					text-transform:capitalize;
+					.font-sourceregular();
+					.fontcalculate( 14 );
+					color:@greyDark;
+					.noselect();
+					
+					/* this doesn't work in chrome, so we fallback to the max-height on the parent */
+					&.newcolumn {
+						break-before:always;
+						page-break-before: always;
+					}
+
+					input {
+						position:absolute;
+						top:7px;
+						left:0;
+					}
+				}
+				.selectall {
+					position:absolute;
+					bottom:10px;
+					left:50%;
+					margin-left:-68px;
+					input {
+						display:none;
+					}
+				}
+			}
+
+			&:hover {
+				.droptrigger {
+					.droptriggerinner {
+						border-color:@red;
+					}
+				}
+				.dropcontent {
+					.transparency( 1 );
+					z-index:100;
+				}
+			}
+		}
+	}
+	
+	.pagination {
+		margin-bottom:20px;
+		text-align:right;
+		.btn {
+			margin-left:0.5em;
+		}
+	}
+
+@media (max-width:@tabletWidth){
+	.mainmenu {
+		.filteritem {
+			.droptrigger {
+				&:before {
+					.transform( rotate(-40deg) );
+				}
+				&:after {
+					.transform( rotate(40deg) );
+				}
+			}
+		}
+	}
+}
+
+
+@media (max-width:@mobileWidth){
+	.mainmenu {
+		padding:0;
+		.mainfilters {
+			z-index:101;
+			display:block;
+			position:absolute;
+			top:100%;
+			left:0;
+			padding:0;
+			width:50%;
+			.transform( translateX(-100%) );
+			.box-shadow( none );
+			background:@greySuperDark;
+
+			.menuresetbtn {
+				position:relative;
+				z-index:1;
+				padding:0.5em 14px;
+				padding-top:1.5em;
+			}
+		}
+		.filteritem {
+			position:relative;
+			display:block;
+			z-index:1;
+
+			.droptrigger {
+				padding:0.8em 1em;
+				text-align:left;
+				.droptriggerinner {
+					border-color:@greySuperDark;
+					border-bottom-width:2px;
+				}
+				&:before,
+				&:after {
+					height:0;
+					width:0;
+				}
+			}
+			.dropcontent {
+				display:none;
+				z-index:-1;
+				left:100%;
+				top:0;
+				max-height:none;
+				height:0;
+				overflow:hidden;
+				padding:20px 10px;
+				padding-top:60px;
+				.border-radius( 0 );
+				.transform( translateX(-100%) );
+				.transition( none );
+
+				.filterlabel {
+					width:auto;
+				}
+				.selectall {
+					top:10px;
+					bottom:auto;
+				}
+			}
+
+			&:hover {
+				.dropcontent {
+					z-index:1;
+					height:auto;
+					.transform( translateX(0%) );
+				}
+			}
+		}
+	}
+	
+	.showmenu {
+		.mainmenu {
+			.mainfilters {
+				.transform( translateX(0%) );
+				.box-shadow( 1px 1px 3px rgba(0,0,0,0.3) );
+			}
+			.filteritem {
+				.dropcontent {
+					display:block;
+				}
+			}
+		}
+		.searchbox {
+			.transform( translateX(100%) );
+		}
+	}
+
+	.showsearch {
+		.mainmenu {
+			.mainfilters {
+				.transform( translateX(-100%) );
+			}
+		}
+		.searchbox {
+			.transform( translateX(0%) );
+		}
+		.mobilesearch {
+			z-index:0;
+		}
+	}
+
+	.pagination {
+		text-align:center;
+		.position {
+			display:block;
+		}
+		.btn {
+			margin:0.25em;
+		}
+	}
+
+}

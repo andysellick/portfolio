@@ -1,0 +1,161 @@
+{ "client"	: [
+		{
+			"jobname"		:	"Postcards from a Solo Traveller",
+			"date"			:	"2016/12/01",
+			"desc"			:	"A simple but beautiful content piece about older people travelling alone.",
+			"liveURL"		:	"https://www.staysure.co.uk/postcards-from-a-solo-traveller/",
+			"img"			:	"postcardssolotraveller.jpg",
+			"filters"		:	{
+								"client"		:	["Staysure"],
+								"format"		:	["microsite"],
+								"designer"		:	["Builtvisible"],
+								"workload"		:	["Sole developer"],
+								"technology"	:	["jquery"],
+								"year"			:	["2016"],
+								"status"		:	["live"]
+							}
+		},
+		{
+			"jobname"		:	"Something under the bed",
+			"desc"			:	"A game I invented and built for Halloween.",
+			"date"			:	"2016/10/31",
+			"liveURL"		:	"https://builtvisible.com/something-under-the-bed/",
+			"moreURL"		:	"http://www.custarddoughnuts.co.uk/article/2016/12/24/a-christmas-present-for-you",
+			"img"			:	"sutb.jpg",
+			"filters"		:	{
+								"client"		:	["Builtvisible"],
+								"format"		:	["game"],
+								"designer"		:	["Builtvisible"],
+								"workload"		:	["Sole developer"],
+								"technology"	:	["jquery"],
+								"year"			:	["2016"],
+								"status"		:	["live"]
+							}
+		},
+		{
+			"jobname"		:	"Builtvisible.com",
+			"date"			:	"2016/07/28",
+			"desc"			:	"A custom Wordpress theme was needed for this huge project to completely transform the Builtvisible website to focus on content and case studies.",
+			"liveURL"		:	"https://builtvisible.com",
+			"img"			:	"builtvisiblesite.jpg",
+			"filters"		:	{
+								"client"		:	["Builtvisible"],
+								"format"		:	["website"],
+								"designer"		:	["Builtvisible"],
+								"workload"		:	["Sole developer"],
+								"technology"	:	["jquery","wordpress"],
+								"year"			:	["2016"],
+								"status"		:	["live"]
+							}
+		},
+		{
+			"jobname"		:	"The Evolution of the Holiday Snap",
+			"date"			:	"2016/06/23",
+			"desc"			:	"<p>A trip back through time to see how holiday photographs have changed over the last hundred years.</p><p>This content piece needed integration with a third party image hosting platform in order to allow users to upload their own holiday snaps, and included a custom moderation system for the client to manage that content.</p>",
+			"liveURL"		:	"http://www.staysure.co.uk/holidaysnaps/",
+			"img"			:	"holidaysnap.jpg",
+			"filters"		:	{
+								"client"		:	["Staysure"],
+								"format"		:	["interactive"],
+								"designer"		:	["Builtvisible"],
+								"workload"		:	["Sole developer"],
+								"technology"	:	["jquery","php","cloudinary"],
+								"year"			:	["2016"],
+								"status"		:	["live"]
+							}
+		},
+		{
+			"jobname"		:	"Future-proof your firm",
+			"desc"			:	"A clean and to-the-point guide to Business Risk Management for companies.",
+			"date"			:	"2016/05/16",
+			"liveURL"		:	"https://www.towergateinsurance.co.uk/liability-insurance/risk-management-guide",
+			"img"			:	"businessrisks.jpg",
+			"filters"		:	{
+								"client"		:	["Towergate"],
+								"format"		:	["longform"],
+								"designer"		:	["Builtvisible"],
+								"workload"		:	["Sole developer"],
+								"year"			:	["2016"],
+								"status"		:	["live"]
+							}
+		},
+		{
+			"jobname"		:	"The Inflation Calculator",
+			"date"			:	"2016/02/08",
+			"desc"			:	"Short interactive piece allowing visitors to see how much their pension pot will be affected by inflation over time.",
+			"liveURL"		:	"https://www.towergateinsurance.co.uk/home-and-property-insurance/inflation-calculator",
+			"devURL"		:	"http://dev.seogadget.com/clients/towergate/inflation/",
+			"moreURL"		:	"http://www.custarddoughnuts.co.uk/article/2016/4/18/the-inflation-calculator",
+			"img"			:	"inflationcalc.jpg",
+			"filters"		:	{
+								"client"		:	["Towergate"],
+								"designer"		:	["Builtvisible"],
+								"workload"		: 	["Sole developer"],
+								"format"		:	["interactive"],
+								"technology"	:	["jquery"],
+								"year"			:	["2016"],
+								"status"		:	["live"]
+							}
+		},
+		{
+			"jobname"		:	"The Landlord's Guide to Short Stay Letting",
+			"date"			:	"2015/12/15",
+			"desc"			:	"Infographic guide for landlords about short stay lets.",
+			"liveURL"		:	"https://www.towergateinsurance.co.uk/commercial-property/guide-to-short-stay-letting",
+			"devURL"		:	"http://dev.seogadget.com/clients/towergate/shortstay/",
+			"img"			:	"shortstayletting.jpg",
+			"filters"		:	{
+								"client"		:	["Towergate"],
+								"designer"		:	["Builtvisible"],
+								"workload"		: 	["Sole developer"],
+								"format"		:	["longform"],
+								"technology"	:	["jquery"],
+								"year"			:	["2015"],
+								"status"		:	["live"]
+							}
+		},
+		{
+			"jobname"		:	"Are Private Market Landlords Given a Bad Rep?",
+			"desc"			:	"A short content piece about tenant perceptions of private market landlords.",
+			"liveURL"		:	"https://www.towergateinsurance.co.uk/commercial-property/are-private-market-landlords-given-a-bad-rep",
+			"img"			:	"privatelandlords.jpg",
+			"filters"		:	{
+								"client"		:	["Towergate"],
+								"designer"		:	["Builtvisible"],
+								"workload"		: 	["Sole developer"],
+								"format"		:	["longform"],
+								"year"			:	["2015"],
+								"status"		:	["live"]
+							}
+		},
+		{
+			"jobname"		:	"Do you have the Travel Gene?",
+			"desc"			:	"An interactive quiz with an Icelandic theme to test how adventurous visitors are.",
+			"devURL"		:	"http://dev.seogadget.com/clients/icelandair/travelgene/",
+			"img"			:	"travelgene.jpg",
+			"filters"		:	{
+								"client"		:	["Icelandair"],
+								"designer"		:	["Builtvisible"],
+								"workload"		: 	["Sole developer"],
+								"format"		:	["interactive"],
+								"year"			:	["2015"],
+								"technology"	:	["jquery"]
+							}
+		},
+		{
+			"jobname"		:	"Savoy Website",
+			"desc"			:	"<p>London's world-famous Savoy hotel wanted help with modernising and streamlining their website with a complete redesign. The new design needed to stay true to The Savoy's prestigious personality while implementing cutting-edge design and user experience principles.</p><p>The result was a truly custom design produced just for The Savoy and its customers, that sadly never saw the light of day.</p>",
+			"devURL"		:	"http://dev.seogadget.com/clients/thesavoy/",
+			"moreURL"		:	"http://www.custarddoughnuts.co.uk/article/2016/10/7/building-a-website-for-a-major-hotel",
+			"img"			:	"thesavoy.jpg",
+			"filters"		:	{
+								"client"		:	["The Savoy"],
+								"designer"		:	["Builtvisible"],
+								"workload"		: 	["Sole developer"],
+								"format"		:	["website"],
+								"year"			:	["2015"],
+								"technology"	:	["jquery"]
+							}
+		}
+	]
+}

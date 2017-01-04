@@ -1,0 +1,155 @@
+/* --webfonts */
+
+	@path: '../assets/fonts/webfonts/';
+
+	@font-face {
+	    font-family: 'montserratbold';
+	    src: url('@{path}montserrat-bold-webfont.eot');
+	    src: url('@{path}montserrat-bold-webfont.eot?#iefix') format('embedded-opentype'),
+	         url('@{path}montserrat-bold-webfont.woff2') format('woff2'),
+	         url('@{path}montserrat-bold-webfont.woff') format('woff'),
+	         url('@{path}montserrat-bold-webfont.ttf') format('truetype'),
+	         url('@{path}montserrat-bold-webfont.svg#montserratbold') format('svg');
+	    font-weight: normal;
+	    font-style: normal;
+	}
+
+	@font-face {
+	    font-family: 'montserratlight';
+	    src: url('@{path}montserrat-light-webfont.eot');
+	    src: url('@{path}montserrat-light-webfont.eot?#iefix') format('embedded-opentype'),
+	         url('@{path}montserrat-light-webfont.woff2') format('woff2'),
+	         url('@{path}montserrat-light-webfont.woff') format('woff'),
+	         url('@{path}montserrat-light-webfont.ttf') format('truetype'),
+	         url('@{path}montserrat-light-webfont.svg#montserratlight') format('svg');
+	    font-weight: normal;
+	    font-style: normal;
+	}
+
+	@font-face {
+	    font-family: 'montserratultra_light';
+	    src: url('@{path}montserrat-ultralight-webfont.eot');
+	    src: url('@{path}montserrat-ultralight-webfont.eot?#iefix') format('embedded-opentype'),
+	         url('@{path}montserrat-ultralight-webfont.woff2') format('woff2'),
+	         url('@{path}montserrat-ultralight-webfont.woff') format('woff'),
+	         url('@{path}montserrat-ultralight-webfont.ttf') format('truetype'),
+	         url('@{path}montserrat-ultralight-webfont.svg#montserratultra_light') format('svg');
+	    font-weight: normal;
+	    font-style: normal;
+	}
+
+	@font-face {
+	    font-family: 'source_sans_probold';
+	    src: url('@{path}sourcesanspro-bold-webfont.eot');
+	    src: url('@{path}sourcesanspro-bold-webfont.eot?#iefix') format('embedded-opentype'),
+	         url('@{path}sourcesanspro-bold-webfont.woff2') format('woff2'),
+	         url('@{path}sourcesanspro-bold-webfont.woff') format('woff'),
+	         url('@{path}sourcesanspro-bold-webfont.ttf') format('truetype'),
+	         url('@{path}sourcesanspro-bold-webfont.svg#source_sans_probold') format('svg');
+	    font-weight: normal;
+	    font-style: normal;
+	}
+
+	@font-face {
+	    font-family: 'source_sans_proregular';
+	    src: url('@{path}sourcesanspro-regular-webfont.eot');
+	    src: url('@{path}sourcesanspro-regular-webfont.eot?#iefix') format('embedded-opentype'),
+	         url('@{path}sourcesanspro-regular-webfont.woff2') format('woff2'),
+	         url('@{path}sourcesanspro-regular-webfont.woff') format('woff'),
+	         url('@{path}sourcesanspro-regular-webfont.ttf') format('truetype'),
+	         url('@{path}sourcesanspro-regular-webfont.svg#source_sans_proregular') format('svg');
+	    font-weight: normal;
+	    font-style: normal;
+	}
+
+	.font-montserratbold(){
+	    font-family: 'montserratbold';
+	}
+	.font-montserratlight(){
+	    font-family: 'montserratlight';
+	}
+	.font-montserratultralight(){
+	    font-family: 'montserratultra_light';
+	}
+	.font-sourcebold(){
+	    font-family: 'source_sans_probold', Arial, Verdana, sans-serif;
+	}
+	.font-sourceregular(){
+	    font-family: 'source_sans_proregular', Arial, Verdana, sans-serif;
+	}
+
+
+/* --headings */
+    h1,h2,h3,h4,h5,h6,
+    .h1,.h2,.h3,.h4,.h5,.h6 {
+        display:block;
+        margin:0 0 0.5em 0;
+        padding:0;
+        font-weight:normal;
+		.font-montserratbold();
+		color:@greyDark;
+		line-height:1.2em;
+    }
+    h1,
+    .h1 {
+        .fontcalculate(22);
+    }
+    h2,
+    .h2 {
+        .fontcalculate(20);
+    }
+    h3,
+    .h3 {
+		.font-sourceregular();
+        .fontcalculate(20);
+    }
+    h4,
+    .h4 {
+        .fontcalculate(18);
+    }
+    h5,
+    .h5 {
+        .fontcalculate(16);
+    }
+    h6,
+    .h6 {
+        .fontcalculate(14);
+    }
+
+/* --other */
+    p {
+        margin:0px;
+        padding:0 0 1em 0;
+    }
+    small {
+        font-size:90%;
+    }
+    strong {
+		.font-sourcebold();
+		font-weight:normal;
+		color:@greyDark;
+	}
+    blockquote {
+        margin:0 0 10px 20px;
+        padding:0 0 0 10px;
+        border-left:solid 3px #cccccc;
+        font-size:1em;
+        color:#666666;
+    }
+    hr {
+        height:1px;
+        margin:0 0 1em 0;
+        border:0;
+        border-top:solid 1px #E7E7E7;
+        clear:both;
+    }
+    code {
+        padding:0 0.3em;
+        font-size:1.2em;
+    }
+
+@media (max-width:@tabletWidth){
+}
+
+@media (max-width:@mobileWidth){
+}
