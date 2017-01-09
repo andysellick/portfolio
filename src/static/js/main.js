@@ -604,7 +604,8 @@ var ClientData = React.createClass({
 												</div>
 												<ul className="links">
 													{demolink}
-													<li className={project.liveURL ? '' :'hidden'}><a href={project.liveURL} target='_blank' >View</a></li>
+													<li className={project.liveURL ? '' :'hidden'}><a href={project.liveURL} target='_blank' >Live</a></li>
+													<li className={project.savedURL ? '' :'hidden'}><a href={project.savedURL} target='_blank'>Original</a></li>
 													<li className={project.moreURL ? '' :'hidden'}><a href={project.moreURL} target='_blank'>More detail</a></li>
 													<li className={project.repo ? '' :'hidden'}><a href={project.repo} target='_blank'>Repo</a></li>
 												</ul>
