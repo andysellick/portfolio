@@ -9,9 +9,9 @@
 								"client"		:	["Builtvisible"],
 								"format"		:	["interactive"],
 								"designer"		:	["Builtvisible"],
-								"workload"		:	["Sole developer"],
 								"technology"	:	["angular"],
 								"year"			:	["2016"],
+								"workload"		:	["Sole developer"],
 								"type"			:	["professional"],
 								"status"		:	["live"]
 							}
@@ -63,6 +63,23 @@
 								"technology"	:	["jquery"],
 								"year"			:	["2016"],
 								"type"			:	["professional"],
+								"status"		:	["live"]
+							}
+		},
+		{
+			"jobname"		:	"Snapd",
+			"date"			:	"2016/09/30",
+			"desc"			:	"My personal photo album website, built partly as an exercise in learning new technology.",
+			"liveURL"		:	"http://www.custarddoughnuts.co.uk/snapd",
+			"img"			:	"snapd.jpg",
+			"filters"		:	{
+								"client"		:	["personal"],
+								"format"		:	["website"],
+								"designer"		:	["personal"],
+								"workload"		:	["Sole developer"],
+								"technology"	:	["angular"],
+								"year"			:	["2016"],
+								"type"			:	["personal"],
 								"status"		:	["live"]
 							}
 		},
@@ -382,6 +399,7 @@
 			"date"			:	"2014/02/07",
 			"desc"			:	"A rebuild of the Nails inc site for the US involved rewriting the whole front end but mostly maintaining the existing design.",
 			"moreURL"		:	"http://www.custarddoughnuts.co.uk/article/2014/2/7/nails-inc-us-launches",
+			"img"			:	"nailsinc_orig.jpg",
 			"filters"		:	{
 								"client"		:	["Nails inc"],
 								"designer"		:	["Tangent Snowball"],
@@ -460,6 +478,38 @@
 								"technology"	:	["php"],
 								"year"			:	["2010"],
 								"type"			:	["personal"],
+								"status"		:	["live"]
+							}
+		},
+		{
+			"jobname"		:	"Brilliant Manager",
+			"date"			:	"2003/06/02",
+			"desc"			:	"<p>The slightly younger website brother of drpeeling.com, this site was built for my then-manager's UK version of his book on management. Included here mainly for sentimental reasons.</p><p>As well as being responsible for the design, I also provided the illustrations on the site, such as the penguin and the caricature of the author.</p>",
+			"liveURL"		:	"http://nicpeeling.com/",
+			"img"			:	"nicpeeling.jpg",
+			"filters"		:	{
+								"client"		:	["Nic Peeling"],
+								"designer"		:	["personal"],
+								"workload"		: 	["Sole developer"],
+								"format"		:	["website"],
+								"year"			:	["2003"],
+								"type"			:	["professional"],
+								"status"		:	["live"]
+							}
+		},
+		{
+			"jobname"		:	"Dr Peeling's Principles of Management",
+			"date"			:	"2003/06/01",
+			"desc"			:	"<p>One of my oldest websites, but still live after all these years. Built for my then-manager's book on management, which I also illustrated.</p><p>The site is so old that it's built using tables (!) but amazingly after all this time and advances in technology it still renders correctly.</p>",
+			"liveURL"		:	"http://drpeeling.com/",
+			"img"			:	"drpeeling.jpg",
+			"filters"		:	{
+								"client"		:	["Nic Peeling"],
+								"designer"		:	["personal"],
+								"workload"		: 	["Sole developer"],
+								"format"		:	["website"],
+								"year"			:	["2003"],
+								"type"			:	["professional"],
 								"status"		:	["live"]
 							}
 		}
