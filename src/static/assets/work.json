@@ -9,7 +9,7 @@
 								"client"		:	["Builtvisible"],
 								"format"		:	["interactive"],
 								"designer"		:	["Builtvisible"],
-								"technology"	:	["angular"],
+								"technology"	:	["angular","gulp"],
 								"year"			:	["2016"],
 								"workload"		:	["Sole developer"],
 								"type"			:	["professional"],
@@ -27,7 +27,7 @@
 								"format"		:	["website"],
 								"workload"		:	["Sole developer"],
 								"year"			:	["2016"],
-								"technology"	:	["wordpress"],
+								"technology"	:	["php","wordpress"],
 								"status"		:	["live"]
 							}
 		},
@@ -42,7 +42,7 @@
 								"format"		:	["microsite"],
 								"designer"		:	["Builtvisible"],
 								"workload"		:	["Sole developer"],
-								"technology"	:	["jquery"],
+								"technology"	:	["jquery","gulp"],
 								"year"			:	["2016"],
 								"type"			:	["professional"],
 								"status"		:	["live"]
@@ -60,7 +60,7 @@
 								"format"		:	["game"],
 								"designer"		:	["Builtvisible"],
 								"workload"		:	["Sole developer"],
-								"technology"	:	["jquery"],
+								"technology"	:	["jquery","gulp"],
 								"year"			:	["2016"],
 								"type"			:	["professional"],
 								"status"		:	["live"]
@@ -77,7 +77,7 @@
 								"format"		:	["website"],
 								"designer"		:	["personal"],
 								"workload"		:	["Sole developer"],
-								"technology"	:	["angular"],
+								"technology"	:	["angular","google maps"],
 								"year"			:	["2016"],
 								"type"			:	["personal"],
 								"status"		:	["live"]
@@ -95,7 +95,7 @@
 								"format"		:	["website"],
 								"designer"		:	["Builtvisible"],
 								"workload"		:	["Sole developer"],
-								"technology"	:	["jquery","wordpress"],
+								"technology"	:	["jquery","php","wordpress"],
 								"year"			:	["2016"],
 								"type"			:	["professional"],
 								"status"		:	["live"]
@@ -112,7 +112,7 @@
 								"format"		:	["interactive"],
 								"designer"		:	["Builtvisible"],
 								"workload"		:	["Sole developer"],
-								"technology"	:	["jquery","php","cloudinary"],
+								"technology"	:	["jquery","php","cloudinary","gulp"],
 								"year"			:	["2016"],
 								"type"			:	["professional"],
 								"status"		:	["live"]
@@ -129,6 +129,7 @@
 								"format"		:	["longform"],
 								"designer"		:	["Builtvisible"],
 								"workload"		:	["Sole developer"],
+								"technology"	:	["gulp"],
 								"year"			:	["2016"],
 								"type"			:	["professional"],
 								"status"		:	["live"]
@@ -146,7 +147,7 @@
 								"designer"		:	["Builtvisible"],
 								"workload"		: 	["Sole developer"],
 								"format"		:	["interactive"],
-								"technology"	:	["jquery","css animations"],
+								"technology"	:	["jquery","css animations","gulp"],
 								"year"			:	["2016"],
 								"type"			:	["professional"],
 								"status"		:	["live"]
@@ -182,7 +183,7 @@
 								"designer"		:	["Builtvisible"],
 								"workload"		: 	["Sole developer"],
 								"format"		:	["longform"],
-								"technology"	:	["jquery"],
+								"technology"	:	["jquery","gulp"],
 								"year"			:	["2015"],
 								"type"			:	["professional"],
 								"status"		:	["live"]
@@ -199,6 +200,7 @@
 								"designer"		:	["Builtvisible"],
 								"workload"		: 	["Sole developer"],
 								"format"		:	["longform"],
+								"technology"	:	["gulp"],
 								"year"			:	["2015"],
 								"type"			:	["professional"],
 								"status"		:	["live"]
@@ -216,7 +218,7 @@
 								"format"		:	["interactive"],
 								"year"			:	["2015"],
 								"type"			:	["professional"],
-								"technology"	:	["jquery"]
+								"technology"	:	["jquery","gulp"]
 							}
 		},
 		{
@@ -232,7 +234,7 @@
 								"format"		:	["website"],
 								"year"			:	["2015"],
 								"type"			:	["professional"],
-								"technology"	:	["jquery","google maps"]
+								"technology"	:	["jquery","google maps","gulp"]
 							}
 		},
 		{
@@ -248,7 +250,7 @@
 								"workload"		: 	["Sole front end developer"],
 								"format"		:	["website"],
 								"year"			:	["2015"],
-								"technology"	:	["jquery"],
+								"technology"	:	["jquery","django templates"],
 								"type"			:	["professional"],
 								"status"		:	["live"]
 							}
@@ -266,7 +268,7 @@
 								"workload"		: 	["Sole front end developer"],
 								"format"		:	["website"],
 								"year"			:	["2015"],
-								"technology"	:	["jquery","canvas"],
+								"technology"	:	["jquery","canvas","django templates"],
 								"type"			:	["professional"]
 							}
 		},
@@ -283,7 +285,7 @@
 								"workload"		: 	["Collaboration"],
 								"format"		:	["website"],
 								"year"			:	["2015"],
-								"technology"	:	["jquery","google maps"],
+								"technology"	:	["jquery","google maps","django templates"],
 								"type"			:	["professional"]
 							}
 		},
@@ -301,7 +303,7 @@
 								"workload"		: 	["Collaboration"],
 								"format"		:	["website"],
 								"year"			:	["2015"],
-								"technology"	:	["jquery"],
+								"technology"	:	["jquery","django templates"],
 								"type"			:	["professional"],
 								"status"		:	["live"]
 							}
@@ -390,7 +392,7 @@
 								"workload"		: 	["Sole front end developer"],
 								"format"		:	["website"],
 								"year"			:	["2014"],
-								"technology"	:	["jquery"],
+								"technology"	:	["jquery","django templates"],
 								"type"			:	["professional"]
 							}
 		},
@@ -406,7 +408,7 @@
 								"workload"		: 	["Sole front end developer"],
 								"format"		:	["website"],
 								"year"			:	["2014"],
-								"technology"	:	["jquery"],
+								"technology"	:	["jquery","django templates"],
 								"type"			:	["professional"]
 							}
 		},
@@ -422,6 +424,7 @@
 								"designer"		:	["personal"],
 								"workload"		: 	["Sole developer"],
 								"format"		:	["website"],
+								"technology"	:	["php"],
 								"year"			:	["2014"],
 								"type"			:	["personal"],
 								"status"		:	["live"]
@@ -457,7 +460,7 @@
 								"designer"		:	["New Pollution"],
 								"workload"		: 	["Sole developer"],
 								"format"		:	["website"],
-								"technology"	:	["php","mysql"],
+								"technology"	:	["php","mysql","jquery"],
 								"year"			:	["2012"],
 								"type"			:	["personal"],
 								"status"		:	["live"]
