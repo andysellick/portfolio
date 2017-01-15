@@ -429,25 +429,6 @@ var ClientData = React.createClass({
 					<div className="headerinner">
 						<div className="container">
 							<span className="mobilemenu mobile-only" onClick={this.showMobileMenu}><img src="static/img/bars.svg"/></span>
-							<span className="mobilesearch mobile-only" onClick={this.showMobileSearch}><img src="static/img/search-white.svg"/></span>
-							<div className="row">
-								<div className="span4">
-									<a href="" className="mainlink"></a>
-								</div>
-								<div className="span8">
-									<div className="headercontrols float-right">
-										<span className="displaycount float-left">Showing {this.state.matchingprojects.length} of {this.state.projects.length}</span>
-										<div className="searchbox float-left">
-											<div className="inputwrapper">
-												<input id="searchbox" type="search" placeholder="search..." value={this.state.searchtext} onChange={this.typeSearch}/>
-											</div>
-											<span className="closesearch mobile-only" onClick={this.closeSearch}><img src="static/img/cross-white.svg" alt="Close"/></span>
-											<button type="submit" className="btn hidden" onClick={this.clearSearch}>Clear</button>
-										</div>
-										<span className={resetdisabled + ' btn float-left mobile-hide'} onClick={this.resetAll}>Reset</span>
-									</div>
-								</div>
-							</div>
 						</div>
 					</div>
 					<nav className="mainmenu">
@@ -500,8 +481,9 @@ var ClientData = React.createClass({
 							}, this)}
 						</div>
 						
-						<div className={this.state.visibleprojects.length != 0 ? 'pagination' : 'pagination hidden'}>
+						<div className={this.state.visibleprojects.length != 0 ? 'pagination mobile-hide' : 'pagination hidden mobile-hide'}>
 							<span className="position">Page {this.state.onpage + 1} of {Math.ceil(this.state.matchingprojects.length / this.state.perpage)}</span>
+							<span className={resetdisabled + ' btn float-left'} onClick={this.resetAll}>Reset</span>
 							<span className={this.state.onpage + 1 == 1 ? 'btn disabled' : 'btn'}  onClick={this.prevPage}>Prev</span>
 							<span className={this.state.onpage + 1 == Math.ceil(this.state.matchingprojects.length / this.state.perpage) ? 'btn disabled' : 'btn'} onClick={this.nextPage}>Next</span>
 						</div>

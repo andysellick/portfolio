@@ -1,7 +1,6 @@
 /* --navigation */
 
 	.mainmenu {
-		padding-top:30px;
 		background:@greyDark;
 
 		.mainfilters {
@@ -31,37 +30,37 @@
 
 				.droptriggerinner {
 					display:inline-block;
-					padding-bottom:0.3em;
+					padding:0.3em 0;
 					border-bottom:solid 4px @greyDark;
 					.transition( border @transpeed );
 				}
-				&:before,
-				&:after {
-					content:"";
-					display:none;
-					position:absolute;
-					top:0;
-					width:7em;
-					height:100%;
-					//border:solid 1px red;
-				}
-				&:before {
-					right:100%;
-					.transform( rotate(-25deg) );
-					.transform-origin( 100% 0% );
-				}
-				&:after {
-					left:100%;
-					.transform( rotate(25deg) );
-					.transform-origin( 0% 0% );
-				}
-				&:hover {
-					z-index:2;
-					&:before,
-					&:after {
-						display:block;
-					}
-				}
+  				&:before,
+  				&:after {
+  					content:"";
+  					display:none;
+  					position:absolute;
+  					top:0;
+  					width:7em;
+  					height:100%;
+  					//border:solid 1px red;
+  				}
+  				&:before {
+  					right:90%;
+  					.transform( rotate(-30deg) );
+  					.transform-origin( 100% 0% );
+  				}
+  				&:after {
+  					left:90%;
+  					.transform( rotate(30deg) );
+  					.transform-origin( 0% 0% );
+  				}
+  				&:hover {
+  					z-index:2;
+  					&:before,
+  					&:after {
+  						display:block;
+  					}
+  				}
 			}
 			&:first-child {
 				.droptrigger:before {
