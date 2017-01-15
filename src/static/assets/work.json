@@ -89,6 +89,7 @@
 			"desc"			:	"A custom Wordpress theme was needed for this huge project to completely transform the Builtvisible website to focus on content and case studies.",
 			"liveURL"		:	"https://builtvisible.com",
 			"savedURL"		:	"https://web.archive.org/web/20161115043358/https://builtvisible.com/",
+			"moreURL"       :   "http://www.custarddoughnuts.co.uk/article/2017/1/9/rebuilding-the-builtvisible-website",
 			"img"			:	"builtvisiblesite.jpg",
 			"filters"		:	{
 								"client"		:	["Builtvisible"],
