@@ -89,6 +89,7 @@
 			"desc"			:	"A custom Wordpress theme was needed for this huge project to completely transform the Builtvisible website to focus on content and case studies.",
 			"liveURL"		:	"https://builtvisible.com",
 			"savedURL"		:	"https://web.archive.org/web/20161115043358/https://builtvisible.com/",
+			"moreURL"       :   "http://www.custarddoughnuts.co.uk/article/2017/1/9/rebuilding-the-builtvisible-website",
 			"img"			:	"builtvisiblesite.jpg",
 			"filters"		:	{
 								"client"		:	["Builtvisible"],
@@ -207,21 +208,6 @@
 							}
 		},
 		{
-			"jobname"		:	"Do you have the Travel Gene?",
-			"date"			:	"2016/01/30",
-			"desc"			:	"An interactive quiz with an Icelandic theme to test how adventurous visitors are.",
-			"img"			:	"travelgene.jpg",
-			"filters"		:	{
-								"client"		:	["Icelandair"],
-								"designer"		:	["Builtvisible"],
-								"workload"		: 	["Sole developer"],
-								"format"		:	["interactive"],
-								"year"			:	["2015"],
-								"type"			:	["professional"],
-								"technology"	:	["jquery","gulp"]
-							}
-		},
-		{
 			"jobname"		:	"Savoy Website",
 			"date"			:	"2016/01/16",
 			"desc"			:	"<p>London's world-famous Savoy hotel wanted help with modernising and streamlining their website with a complete redesign. </p><p>The result was a custom design produced just for the Savoy and its customers, that sadly never saw the light of day.</p>",
@@ -248,7 +234,7 @@
 								"client"		:	["Walkers"],
 								"designer"		:	["Tangent Snowball"],
 								"workload"		: 	["Sole front end developer"],
-								"format"		:	["website"],
+								"format"		:	["ecommerce website"],
 								"year"			:	["2015"],
 								"technology"	:	["jquery","django templates"],
 								"type"			:	["professional"],
@@ -283,7 +269,7 @@
 								"client"		:	["Sky"],
 								"designer"		:	["Tangent Snowball"],
 								"workload"		: 	["Collaboration"],
-								"format"		:	["website"],
+								"format"		:	["ecommerce website"],
 								"year"			:	["2015"],
 								"technology"	:	["jquery","google maps","django templates"],
 								"type"			:	["professional"]
@@ -301,7 +287,7 @@
 								"client"		:	["Nails inc"],
 								"designer"		:	["Tangent Snowball"],
 								"workload"		: 	["Collaboration"],
-								"format"		:	["website"],
+								"format"		:	["ecommerce website"],
 								"year"			:	["2015"],
 								"technology"	:	["jquery","django templates"],
 								"type"			:	["professional"],
@@ -390,7 +376,7 @@
 								"client"		:	["Walkers"],
 								"designer"		:	["Tangent Snowball"],
 								"workload"		: 	["Sole front end developer"],
-								"format"		:	["website"],
+								"format"		:	["ecommerce website"],
 								"year"			:	["2014"],
 								"technology"	:	["jquery","django templates"],
 								"type"			:	["professional"]
@@ -406,7 +392,7 @@
 								"client"		:	["Nails inc"],
 								"designer"		:	["Tangent Snowball"],
 								"workload"		: 	["Sole front end developer"],
-								"format"		:	["website"],
+								"format"		:	["Ecommerce website"],
 								"year"			:	["2014"],
 								"technology"	:	["jquery","django templates"],
 								"type"			:	["professional"]
@@ -415,7 +401,7 @@
 		{
 			"jobname"		:	"Redundant",
 			"date"			:	"2014/01/08",
-			"desc"			:	"One of my less ambitious webcomics, built to accommodate mobile devices.",
+			"desc"			:	"A deliberately unambitious webcomic, built to accommodate mobile devices.",
 			"liveURL"		:	"http://www.custarddoughnuts.co.uk/redundant/",
 			"moreURL"		:	"http://www.custarddoughnuts.co.uk/article/2014/1/18/redoing-redundant",
 			"img"			:	"redundant.jpg",
@@ -423,7 +409,7 @@
 								"client"		:	["personal"],
 								"designer"		:	["personal"],
 								"workload"		: 	["Sole developer"],
-								"format"		:	["website"],
+								"format"		:	["webcomic"],
 								"technology"	:	["php"],
 								"year"			:	["2014"],
 								"type"			:	["personal"],
@@ -480,6 +466,23 @@
 								"format"		:	["website"],
 								"technology"	:	["php"],
 								"year"			:	["2010"],
+								"type"			:	["personal"],
+								"status"		:	["live"]
+							}
+		},
+		{
+			"jobname"		:	"Lego Heights",
+			"date"			:	"2006/01/05",
+			"desc"			:	"My ambitious but ultimately unmaintainable Lego based webcomic. I also built the site that hosts it, which is showing its age a little, but the comic has a few good moments - if you like Lego and Star Wars, that is.",
+			"liveURL"		:	"http://www.custarddoughnuts.co.uk/legoheights/",
+			"img"			:	"legoheights.jpg",
+			"filters"		:	{
+								"client"		:	["personal"],
+								"designer"		:	["personal"],
+								"workload"		: 	["Sole developer"],
+								"format"		:	["webcomic"],
+								"technology"	:	["php"],
+								"year"			:	["2006"],
 								"type"			:	["personal"],
 								"status"		:	["live"]
 							}
