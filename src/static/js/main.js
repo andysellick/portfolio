@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom'
 import data from '../assets/work.json';
 import HeaderBlock from './header.js';
 import NavBlock from './nav.js';
+import ActiveFiltersBlock from './activefilters.js';
 
 var ClientData = React.createClass({
 	getInitialState: function() {
@@ -27,14 +28,14 @@ var ClientData = React.createClass({
 		var projects = this.sortProjectData(data);
 		var filters = this.extractAllFilters(projects);
 		
-		var activeFilters = this.setActiveFilters(); //create a temporary array of all active filters
+		//var activeFilters = this.setActiveFilters(); //create a temporary array of all active filters
 		
-		console.log(filters);
-		console.log(activeFilters);
+		console.log('filters',filters);
+		//console.log('activeFilters',activeFilters);
 
 		//insert the sorted project data into the state
 		//this.setState({	projects: projects, filters: filters, activeFilters: activeFilters },this.displayProjects);
-		this.setState({	projects: projects, matchingprojects: projects, filters: filters, activeFilters: activeFilters });
+		this.setState({	projects: projects, matchingprojects: projects, filters: filters });
 		//this.checkPageHash();
 	},
 	
@@ -154,6 +155,7 @@ var ClientData = React.createClass({
 
 	//when a filter checkbox is clicked, set that filter accordingly
 	filterByTarget: function (clicked,filtertype){
+		console.log('filterByTarget');
 		this.state.searchtext = '';
 		for(var i = 0; i < this.state.filters[filtertype].length; i++){
 			if(this.state.filters[filtertype][i].name === clicked){
@@ -417,10 +419,11 @@ var ClientData = React.createClass({
 			<div>
 				<header className={this.mobileHeaderState + ' header'}>
 					<HeaderBlock showing={this.state.matchingprojects.length} total={this.state.projects.length}/>
-					<NavBlock filters={this.state.filters}/>
+					<NavBlock filters={this.state.filters} onChange={this.filterByTarget}/>
 				</header>
 				<main className="main" onClick={this.clearMobileMenus}>
 					<div className="container">
+						<ActiveFiltersBlock/>						
 						<div className="activefilters">
 							{this.state.activeFilters.map(function(filter,i,key){
 								var filterkey = this.state.activeFilters[i].name;

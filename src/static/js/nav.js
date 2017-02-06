@@ -4,7 +4,10 @@ class NavBlock extends React.Component {
 	}
 	selectAllFilter(){
 	}
-	filterByTarget(){
+	filterByTarget(clicked,filtertype){
+		console.log('filterByTarget, component',clicked,filtertype);
+		console.log(this.props.filters);
+		this.props.onChange(clicked,filtertype);
 	}
     render(){
 		var props = this.props.filters;
