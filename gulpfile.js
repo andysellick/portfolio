@@ -43,6 +43,13 @@ var babel = require("gulp-babel");
 var cssnano = require('gulp-cssnano');
 var browserSync = require('browser-sync');
 
+var gutil = require('gulp-util');
+var uglify = require('gulp-uglify');
+var babelify = require('babelify');
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
+var eslint = require('gulp-eslint');
+
 /* CSS - LESS */
 function processCss(inputStream, taskType) {
     return inputStream
@@ -64,7 +71,56 @@ gulp.task('less:main', function() {
     return processCss(gulp.src(paths.styles.src + 'styles.less'), 'Styles');
 });
 
-/* JS */
+//copy, compile and minify JS to dist
+gulp.task('scripts', ['eslint'], function(){
+	process.env.NODE_ENV = 'production';
+	$.browserify(paths.scripts.src  + 'main.js')
+		.transform('babelify',{presets: ['es2015','react'] })
+		.bundle()
+		.on('error',function(e){
+			const error = gutil.colors.red;
+			gutil.log(error('Error in script:',e.message));
+		})
+		.pipe(source('main.js'))
+		.pipe(buffer()) //convert streaming vinyl file object given by source() to buffered vinyl file object
+		.pipe(uglify()) //minify JS
+		.pipe($.rename({suffix: '.min'})) //rename output to include .min
+		.pipe(gulp.dest(paths.scripts.dest)) //pipe to destination
+		.pipe(browserSync.stream())		
+});
+
+//run jsx code through eslint
+gulp.task('eslint', function(){
+	return gulp.src(paths.scripts.src + '**/*.js')
+		.pipe(eslint({
+			baseConfig: {
+				"parserOptions": {
+					"ecmaFeatures": {
+						"jsx": true,
+						"modules": true
+					}
+				},
+				"parser": "babel-eslint",
+				"rules":{
+					"eqeqeq": 1,
+					"curly":1,
+					"quotes": ["warn", "single"],					
+					"curly": 1,
+					"camelcase": 1,
+					"globals": {
+						"angular": 1,
+						"React": 1,
+						"$": 1,
+						"jQuery": 1
+					}					
+				}
+			}
+		}))
+		.pipe(eslint.format())
+		.pipe(eslint.failAfterError())
+});
+
+/* JS
 gulp.task('scripts', ['scripts:moveFiles'], function() {
   return gulp.src(paths.scripts.src + '*.js')
 	.pipe(babel())
@@ -84,6 +140,7 @@ gulp.task('scripts', ['scripts:moveFiles'], function() {
     .pipe(browserSync.stream())
     //.pipe($.notify({ message: 'Scripts task complete' }));
 });
+*/
 
 /* Move JS files that are already minified to hub/js/ folder */
 gulp.task('scripts:moveFiles', function() {
@@ -107,13 +164,26 @@ gulp.task('images', function() {
     //.pipe($.notify({ message: 'Images task complete' }));
 });
 
-/* HTML */
+//copy and minify HTML files to dist
+gulp.task('copyHtml',function(){
+	return gulp.src(paths.templates.src + '*.html')
+		.pipe($.htmlmin({collapseWhitespace:true, minifyJS: true, minifyCSS: true}))
+		.pipe($.newer(paths.templates.dest))
+		.on('error',function(e){
+			const error = gutil.colors.red;
+			gutil.log(error('Error in html:',e.message));
+		})
+		.pipe(gulp.dest(paths.templates.dest))
+        .pipe(browserSync.stream())
+});
+/* HTML
 gulp.task('copyHtml', function(){
     return gulp.src(paths.templates.src + "*.html")
         .pipe(gulp.dest(paths.templates.dest))
         .pipe(browserSync.stream())
         //.pipe($.notify({ message: 'HTML task complete' }));
 });
+*/
 
 /* htaccess */
 gulp.task('copyHtaccess', function(){

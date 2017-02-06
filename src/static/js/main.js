@@ -1,25 +1,17 @@
-
 /* JShint config */
 /* globals React, ReactDOM, datasource, LazyLoad */
-
-//do an ajax request
-function callAjax(url, callback) {
-	var xmlhttp = new XMLHttpRequest();
-	xmlhttp.onreadystatechange = function() {
-		if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-			callback(xmlhttp.responseText);
-		}
-	};
-	xmlhttp.open('GET', url, true);
-	xmlhttp.send();
-}
+import React from 'react'
+import ReactDOM from 'react-dom'
+import data from '../assets/work.json';
+import HeaderBlock from './header.js';
+import NavBlock from './nav.js';
 
 var ClientData = React.createClass({
 	getInitialState: function() {
 		return {
 			projects: [], //this holds all of the projects
 			matchingprojects: [], //this holds all of the projects that match the current filter/search state
-			visibleprojects: [], //this holds all of the projects that should be shown currently, depending on pagination
+			//visibleprojects: [], //this holds all of the projects that should be shown currently, depending on pagination
 			filters: {},
 			activeFilters: [],
 			globalSelect: 0,
@@ -32,52 +24,65 @@ var ClientData = React.createClass({
 	},
 
 	componentDidMount: function() {
-		callAjax(this.props.url,this.receiveAjaxRequest);
+		var projects = this.sortProjectData(data);
+		var filters = this.extractAllFilters(projects);
+		
+		var activeFilters = this.setActiveFilters(); //create a temporary array of all active filters
+		
+		console.log(filters);
+		console.log(activeFilters);
+
+		//insert the sorted project data into the state
+		//this.setState({	projects: projects, filters: filters, activeFilters: activeFilters },this.displayProjects);
+		this.setState({	projects: projects, matchingprojects: projects, filters: filters, activeFilters: activeFilters });
+		//this.checkPageHash();
 	},
+	
+	//get original data, sort projects by date, should only need to do this once
+	sortProjectData: function(projdata){
+		var projects = [];
 
-	//process data received from ajax and set state
-	receiveAjaxRequest: function(data, filters){
-		data = JSON.parse(data);
-
-		var projdata = [];
-		for(var d = 0; d < data.client.length; d++){
+		for(var d = 0; d < projdata.length; d++){
 			var flag = -1;
-			//sort project data by date. If no specific date, concoct a rough one using the year
-			if(typeof data.client[d].date === 'undefined'){
-				data.client[d].date = data.client[d].filters.year[0] + '/01/01';
+			//if no specific date, concoct a rough one using the year
+			if(typeof projdata[d].date === 'undefined'){
+				projdata[d].date = projdata[d].filters.year[0] + '/01/01';
 			}
 
-			for(var n = 0; n < projdata.length; n++){
-				//if(data.client[d].jobname > projdata[n].jobname){ //order alphabetically
-				if(data.client[d].date > projdata[n].date){ //order by date of work
+			for(var n = 0; n < projects.length; n++){
+				//if(projdata[d].jobname > projdata[n].jobname){ //order alphabetically
+				if(projdata[d].date > projects[n].date){ //order by date of work
 					flag = n;
 				}
 			}
-
+			//insert into projdata according to date
 			if(flag === -1){
-				projdata.unshift(data.client[d]);
+				projects.unshift(projdata[d]);
 			}
 			else {
-				projdata.splice(flag + 1, 0, data.client[d]);
+				projects.splice(flag + 1, 0, projdata[d]);
 			}
 		}
-		projdata.reverse();
-		//insert the sorted project data into the state
-		this.setState({	projects: projdata });
-
-		//now use the state projects data to find all the possible filters
-		for(var a = 0; a < this.state.projects.length; a++) {
+		projects.reverse();
+		return(projects);
+	},
+	
+	//given project data, find all possible filters within it
+	extractAllFilters: function(projdata){
+		var filters = {};
+		//now use the projects data to find all the possible filters
+		for(var a = 0; a < projdata.length; a++) {
 			// loop through projects array and find each object
-			for (var key in this.state.projects[a].filters) {
-				if(this.state.projects[a].filters[key][0].length){ //only check/insert if the first array value is not an empty string
-					for (var b = 0; b < this.state.projects[a].filters[key].length; b++) {
+			for (var key in projdata[a].filters) {
+				if(projdata[a].filters[key][0].length){ //only check/insert if the first array value is not an empty string
+					for (var b = 0; b < projdata[a].filters[key].length; b++) {
 						//if there already exists a filter for whatever this is, e.g. 'client'
-						if(this.state.filters.hasOwnProperty(key)) {
+						if(filters.hasOwnProperty(key)) {
 							var found = 0;
 							//check to see if there is already a filter in this group with this name
-							var valtoinsert = this.state.projects[a].filters[key][b].toLowerCase();
-							for(var c = 0; c < this.state.filters[key].length; c++) {
-								if(this.state.filters[key][c].name === valtoinsert){
+							var valtoinsert = projdata[a].filters[key][b].toLowerCase();
+							for(var c = 0; c < filters[key].length; c++) {
+								if(filters[key][c].name === valtoinsert){
 									found = 1;
 									break;
 								}
@@ -87,23 +92,23 @@ var ClientData = React.createClass({
 								var topush = {'name' : valtoinsert, 'checked' : 0};
 								//search through and insert alphabetically
 								var flag2 = -1;
-								for(var alpha = 0; alpha < this.state.filters[key].length; alpha++){
-									if(topush.name > this.state.filters[key][alpha].name){
+								for(var alpha = 0; alpha < filters[key].length; alpha++){
+									if(topush.name > filters[key][alpha].name){
 										flag2 = alpha;
 									}
 								}
 								if(flag2 === -1){
-									this.state.filters[key].unshift(topush); //add to the start of the array
+									filters[key].unshift(topush); //add to the start of the array
 								}
 								else {
-									this.state.filters[key].splice(flag2 + 1,0,topush);
+									filters[key].splice(flag2 + 1,0,topush);
 								}
 							}
 						}
 						//this filter does not already exist in the filters list
 						else {
-							this.state.filters[key] = [];
-							this.state.filters[key].push({'name' : this.state.projects[a].filters[key][b].toLowerCase(), 'checked' : 0});
+							filters[key] = [];
+							filters[key].push({'name' : projdata[a].filters[key][b].toLowerCase(), 'checked' : 0});
 						}
 					}
 				}
@@ -111,69 +116,41 @@ var ClientData = React.createClass({
 		}
 
 		//insert 'not set' as an actual filter option for each filter
-		for(var fkey in this.state.filters){
-			this.state.filters[fkey].push({'name': 'not set', 'checked' : 0});
+		for(var fkey in filters){
+			filters[fkey].push({'name': 'not set', 'checked' : 0});
 		}
 		//insert 'not set' into any blank project data
-		for(var proj = 0; proj < this.state.projects.length; proj++) {
-			for(var newkey in this.state.filters){
+		for(var proj = 0; proj < projdata.length; proj++) {
+			for(var newkey in filters){
 				//if the project does not have a filter called this, or it's been set to [''], set it to 'not set'
-				if(!this.state.projects[proj].filters.hasOwnProperty(newkey) || this.state.projects[proj].filters[newkey][0] === ''){
-					this.state.projects[proj].filters[newkey] = ['not set'];
+				if(!projdata[proj].filters.hasOwnProperty(newkey) || projdata[proj].filters[newkey][0] === ''){
+					projdata[proj].filters[newkey] = ['not set'];
 				}
 				else {
 					//lowercase everything in the filters
-					for(var lower = 0; lower < this.state.projects[proj].filters[newkey].length; lower++){
-						this.state.projects[proj].filters[newkey][lower] = this.state.projects[proj].filters[newkey][lower].toLowerCase();
+					for(var lower = 0; lower < projdata[proj].filters[newkey].length; lower++){
+						projdata[proj].filters[newkey][lower] = projdata[proj].filters[newkey][lower].toLowerCase();
 					}
 				}
 			}
-		}
-		this.displayProjects();
-		this.forceUpdate();
-		//this.checkPageHash();
+		}	
+		return(filters);
 	},
 
 	//handle the popup windows containing additional info about projects
 	showPopup: function(i,job) {
 		// check if an element does not have the expanded state on it. If it doesn't add it and if not, leave as is.
-		if (this.state.visibleprojects[i].expanded !== true) {
-			this.state.visibleprojects[i].expanded = true;
-			this.state.visibleprojects[i].jsdropdown = true;
+		if (this.state.matchingprojects[i].expanded !== true) {
+			this.state.matchingprojects[i].expanded = true;
+			this.state.matchingprojects[i].jsdropdown = true;
 			//this.setLocationHash(job);
 		} else{
-			this.state.visibleprojects[i].expanded = false;
+			this.state.matchingprojects[i].expanded = false;
 			//this.setLocationHash('');
 		}
 		this.forceUpdate();
 	},
 
-	//given a job name, set the page hash to it
-	//fixme only problem with this is that if the hash is empty, the hash is left as simply '#', which causes the page to jump to the top of the screen, so this is disabled for now
-	setLocationHash: function(usehash){
-		usehash = usehash.replace(/ /g,'_').replace(/'/g,'');
-		location.hash = usehash;
-	},
-
-	//on page load, check the hash for what popup we should be showing
-	checkPageHash: function(){
-		var currhash = location.hash.replace('#','').replace(/_/g,' ');
-		var job = '';
-		if(currhash.length){
-			var found = -1;
-			for(var z = 0; z < this.state.projects.length; z++){
-				job = this.state.projects[z].jobname;
-				job = job.replace(/'/g,'');
-				if(job === currhash){
-					found = z;
-					break;
-				}
-			}
-			if(found !== -1){
-				this.showPopup(found,currhash);
-			}
-		}
-	},
 
 	//when a filter checkbox is clicked, set that filter accordingly
 	filterByTarget: function (clicked,filtertype){
@@ -206,34 +183,44 @@ var ClientData = React.createClass({
 		this.displayProjects();
 	},
 
-	//called after filters have changed, updates show/hide status of projects accordingly
-	displayProjects: function(){
-		this.state.resetstatus = 1;
-		this.state.activeFilters = []; //create a temporary array of all active filters
-		this.state.visibleprojects = []; //reset the currently shown projects
-		this.state.matchingprojects = []; //holds any projects that should be shown, will be filtered shortly to fit the pagination
-
-		for(var key in this.state.filters){
+	//determine 
+	setActiveFilters: function(){
+		console.log('setActiveFilters');
+		var filters = this.state.filters;
+		var activeFilters = [];
+		//get all selected filters and add to activeFilters
+		for(var key in filters){
 			var obj = {'name': key, vals: []};
-			for(var filt = 0; filt < this.state.filters[key].length; filt++){
-				if(this.state.filters[key][filt].checked === 1){
-					obj.vals.push(this.state.filters[key][filt].name);
+			for(var filt = 0; filt < filters[key].length; filt++){
+				if(filters[key][filt].checked === 1){
+					obj.vals.push(filters[key][filt].name);
 				}
 			}
 			if(obj.vals.length){
-				this.state.activeFilters.push(obj);
+				activeFilters.push(obj);
 			}
-		}
-
+		}	
+		return(activeFilters);
+	},
+	
+	//called after filters have changed, updates show/hide status of projects accordingly
+	displayProjects: function(){	
+		console.log('displayProjects');		
+		var filters = this.state.filters;
+		
+		var resetstatus = 1;
+		//var activeFilters = this.changeActiveFilters(); //create a temporary array of all active filters
+		var matchingprojects = []; //holds any projects that should be shown, will be filtered shortly to fit the pagination
+		
 		if(this.state.activeFilters.length){
-			for(var p = 0; p < this.state.projects.length; p++){
+			for(var p = 0; p < data.length; p++){
 				var showproj = 1;
 				for(var f = 0; f < this.state.activeFilters.length; f++){
 					if(showproj){
 						var showsect = 0;
 						var findfilter = this.state.activeFilters[f].name;
-						for(var thisfilt = 0; thisfilt < this.state.projects[p].filters[findfilter].length; thisfilt++){
-							if(this.state.activeFilters[f].vals.indexOf(this.state.projects[p].filters[findfilter][thisfilt]) !== -1){
+						for(var thisfilt = 0; thisfilt < data[p].filters[findfilter].length; thisfilt++){
+							if(this.state.activeFilters[f].vals.indexOf(data[p].filters[findfilter][thisfilt]) !== -1){
 								showsect = 1;
 								break;
 							}
@@ -247,18 +234,19 @@ var ClientData = React.createClass({
 					}
 				}
 				if(showproj){
-					this.state.matchingprojects.push(this.state.projects[p]); //this project should be shown, so put it into the list to be shown
+					matchingprojects.push(data[p]); //this project should be shown, so put it into the list to be shown
 				}
 			}
-			this.paginateVisible();
+			//this.paginateVisible();
+			this.setState({matchingprojects: matchingprojects});
 		}
 		else {
-			this.state.resetstatus = 0;
-			this.showAllProjects();
+			//matchingprojects = this.state.projects;
+			//this.state.resetstatus = 0;
+			//this.showAllProjects();
 		}
-		this.forceUpdate();
 	},
-
+/*
 	//do the pagination - only have projects in the visibleprojects state that fall within the current pagination boundaries
 	paginateVisible: function(){
 		this.state.visibleprojects = [];
@@ -269,7 +257,7 @@ var ClientData = React.createClass({
 			this.state.visibleprojects.push(this.state.matchingprojects[g]);
 		}
 	},
-
+*/
 	//resets everything to default state
 	resetAll: function(){
 		for(var key in this.state.filters){
@@ -307,7 +295,7 @@ var ClientData = React.createClass({
 		if(typed.length > 2){
 			this.displayProjects(); //reset the search to those things found by filters, otherwise bug caused by invalid search that can't be deleted
 			this.state.resetstatus = 1;
-			this.state.visibleprojects = [];
+			//this.state.visibleprojects = [];
 			var matches = this.state.matchingprojects;
 			this.state.matchingprojects = [];
 
@@ -416,78 +404,20 @@ var ClientData = React.createClass({
 	},
 
 	render: function() {
+		console.log('render');
 		var self = this;
 		var filtersObject = this.state.filters;
 		var resetdisabled = 'disabled';
 		if(this.state.resetstatus === 1){
 			resetdisabled = 'btn-primary';
 		}
+		console.log(this.state.projects.length);
 
 		return (
 			<div>
 				<header className={this.mobileHeaderState + ' header'}>
-					<div className="headerinner">
-						<div className="container">
-							<span className="mobilemenu mobile-only" onClick={this.showMobileMenu}><img src="static/img/bars.svg"/></span>
-							<span className="mobilesearch mobile-only" onClick={this.showMobileSearch}><img src="static/img/search-white.svg"/></span>
-							<div className="row">
-								<div className="span4">
-									<a href="" className="mainlink"></a>
-								</div>
-								<div className="span8">
-									<div className="headercontrols float-right">
-										<span className="displaycount float-left">Showing {this.state.matchingprojects.length} of {this.state.projects.length}</span>
-										<div className="searchbox float-left">
-											<div className="inputwrapper">
-												<input id="searchbox" type="search" placeholder="search..." value={this.state.searchtext} onChange={this.typeSearch}/>
-											</div>
-											<span className="closesearch mobile-only" onClick={this.closeSearch}><img src="static/img/cross-white.svg" alt="Close"/></span>
-											<button type="submit" className="btn hidden" onClick={this.clearSearch}>Clear</button>
-										</div>
-										<span className={resetdisabled + ' btn float-left mobile-hide'} onClick={this.resetAll}>Reset</span>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<nav className="mainmenu">
-						<ul className="mainfilters">
-							{Object.keys(this.state.filters).map(function(filtertype,i) {
-								return(
-									<li className="filteritem" key={i}>
-										<span className="droptrigger"><span className="droptriggerinner">{filtertype}</span></span>
-										<div className="dropcontent">
-											{Object.keys(filtersObject[filtertype]).map(function(filter,j){
-												var breakon = '';
-												//console.log(filtersObject[filtertype].length, filtertype, j,j % Math.ceil(filtersObject[filtertype].length / 4));
-												//combined with css flexbox, do clever column sorting layout
-												if(j % Math.ceil(filtersObject[filtertype].length / 4) === 0){
-													breakon = 'newcolumn';
-												}
-												var thisFilter = filtersObject[filtertype][filter].name;
-												var checked = filtersObject[filtertype][filter];
-
-												if(thisFilter.length){
-													return(
-														<label className={breakon + " filterlabel"} key={j}>
-															<input type="checkbox" name={thisFilter} checked={checked.checked ? 'checked' : ''} onChange={self.filterByTarget.bind(null,thisFilter,filtertype)}/>
-															{thisFilter}
-														</label>
-													);
-												}
-											})}
-											<label className="btn btn-primary selectall">
-												<input type="checkbox" name={filtertype} onChange={self.selectAllFilter}/> Select all
-											</label>
-										</div>
-									</li>
-								)
-							})}
-							<li className="menuresetbtn mobile-only">
-								<span className={resetdisabled + ' btn btn-block center'} onClick={this.resetAll}>Reset</span>
-							</li>
-						</ul>
-					</nav>
+					<HeaderBlock showing={this.state.matchingprojects.length} total={this.state.projects.length}/>
+					<NavBlock filters={this.state.filters}/>
 				</header>
 				<main className="main" onClick={this.clearMobileMenus}>
 					<div className="container">
@@ -500,16 +430,16 @@ var ClientData = React.createClass({
 							}, this)}
 						</div>
 						
-						<div className={this.state.visibleprojects.length != 0 ? 'pagination' : 'pagination hidden'}>
+						<div className={this.state.matchingprojects.length != 0 ? 'pagination' : 'pagination hidden'}>
 							<span className="position">Page {this.state.onpage + 1} of {Math.ceil(this.state.matchingprojects.length / this.state.perpage)}</span>
 							<span className={this.state.onpage + 1 == 1 ? 'btn disabled' : 'btn'}  onClick={this.prevPage}>Prev</span>
 							<span className={this.state.onpage + 1 == Math.ceil(this.state.matchingprojects.length / this.state.perpage) ? 'btn disabled' : 'btn'} onClick={this.nextPage}>Next</span>
 						</div>
 						
-						<div className={this.state.visibleprojects.length != 0 ? 'hidden' : ''}>No matching results found.</div>
+						<div className={this.state.matchingprojects.length != 0 ? 'hidden' : ''}>No matching results found.</div>
 
 						<ul className="flexigrid">
-							{this.state.visibleprojects.map(function(project,i,key){
+							{this.state.matchingprojects.map(function(project,i,key){
 								var techs = [];
 								var devs = [];
 								var designers = [];
@@ -615,7 +545,7 @@ var ClientData = React.createClass({
 								);
 							}, this)}
 						</ul>
-						<div className={this.state.visibleprojects.length != 0 ? 'pagination' : 'pagination hidden'}>
+						<div className={this.state.matchingprojects.length != 0 ? 'pagination' : 'pagination hidden'}>
 							<span className="position">Page {this.state.onpage + 1} of {Math.ceil(this.state.matchingprojects.length / this.state.perpage)}</span>
 							<span className={this.state.onpage + 1 == 1 ? 'btn disabled' : 'btn'}  onClick={this.prevPage}>Prev</span>
 							<span className={this.state.onpage + 1 == Math.ceil(this.state.matchingprojects.length / this.state.perpage) ? 'btn disabled' : 'btn'} onClick={this.nextPage}>Next</span>
@@ -625,9 +555,38 @@ var ClientData = React.createClass({
 			</div>
 		);
 	}
+	
+/*
+	//given a job name, set the page hash to it
+	//fixme only problem with this is that if the hash is empty, the hash is left as simply '#', which causes the page to jump to the top of the screen, so this is disabled for now
+	setLocationHash: function(usehash){
+		usehash = usehash.replace(/ /g,'_').replace(/'/g,'');
+		location.hash = usehash;
+	},
+
+
+	//on page load, check the hash for what popup we should be showing
+	checkPageHash: function(){
+		var currhash = location.hash.replace('#','').replace(/_/g,' ');
+		var job = '';
+		if(currhash.length){
+			var found = -1;
+			for(var z = 0; z < this.state.projects.length; z++){
+				job = this.state.projects[z].jobname;
+				job = job.replace(/'/g,'');
+				if(job === currhash){
+					found = z;
+					break;
+				}
+			}
+			if(found !== -1){
+				this.showPopup(found,currhash);
+			}
+		}
+	},
+*/	
 });
 
 ReactDOM.render(
-	<ClientData url='./static/assets/work.json'/>,
-	document.getElementById('react')
+	<ClientData/>,document.getElementById('react')
 );
