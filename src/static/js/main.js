@@ -1,7 +1,6 @@
-/* JShint config */
-/* globals React, ReactDOM, datasource, LazyLoad */
-import React from 'react'
-import ReactDOM from 'react-dom'
+
+import React from 'react';
+import ReactDOM from 'react-dom';
 import data from '../assets/work.json';
 import HeaderBlock from './header.js';
 import NavBlock from './nav.js';
@@ -413,7 +412,6 @@ var ClientData = React.createClass({
 		if(this.state.resetstatus === 1){
 			resetdisabled = 'btn-primary';
 		}
-		console.log(this.state.projects.length);
 
 		return (
 			<div>

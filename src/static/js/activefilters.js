@@ -1,9 +1,10 @@
+import React from 'react';
 
-class ActiveFiltersBlock extends React.Component {
-    render(){
+var ActiveFiltersBlock = React.createClass({displayName: 'ActiveFiltersBlock',
+    render: function(){
 		return(
 			<div></div>
 		);
 	}
-}
-export default ActiveFiltersBlock
+});
+module.exports = ActiveFiltersBlock;

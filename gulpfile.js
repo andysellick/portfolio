@@ -39,7 +39,6 @@ var gulp = require('gulp'),
     copyFiles = {
         scripts: []
     };
-var babel = require("gulp-babel");
 var cssnano = require('gulp-cssnano');
 var browserSync = require('browser-sync');
 
@@ -49,6 +48,10 @@ var babelify = require('babelify');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var eslint = require('gulp-eslint');
+var watchify = require('watchify');
+var argv = require('yargs').argv;
+var gulpif = require('gulp-if');
+var browserify = require('browserify');
 
 /* CSS - LESS */
 function processCss(inputStream, taskType) {
@@ -70,7 +73,7 @@ gulp.task('styles', ['less:main']);
 gulp.task('less:main', function() {
     return processCss(gulp.src(paths.styles.src + 'styles.less'), 'Styles');
 });
-
+/*
 //copy, compile and minify JS to dist
 gulp.task('scripts', ['eslint'], function(){
 	process.env.NODE_ENV = 'production';
@@ -86,7 +89,41 @@ gulp.task('scripts', ['eslint'], function(){
 		.pipe(uglify()) //minify JS
 		.pipe($.rename({suffix: '.min'})) //rename output to include .min
 		.pipe(gulp.dest(paths.scripts.dest)) //pipe to destination
-		.pipe(browserSync.stream())		
+		.pipe(browserSync.stream())
+});
+*/
+
+//using watchify, seems to be quicker than the former, above, but still slow with uglify
+var bundler = watchify(browserify({
+	entries : [paths.scripts.src  + 'main.js'],
+	cache: {}, 
+	packageCache: {}, 
+	fullPaths: false,
+	debug: false //disable sourcemaps
+})).transform("babelify", {presets: ["es2015", "react"]});
+bundler.on('update', bundle);
+
+function bundle(){
+	process.env.NODE_ENV = 'production';
+	var minify = 1;
+	if(argv.devmode){
+		minify = 0;
+	}
+	return bundler.bundle()
+		.on('error',function(e){
+			const error = gutil.colors.red;
+			gutil.log(error('Error in script:',e.message));
+		})
+		.pipe(source('main.js'))
+		.pipe(buffer()) //convert streaming vinyl file object given by source() to buffered vinyl file object
+		.pipe(gulpif(minify, uglify())) //minify JS
+		.pipe($.rename({suffix: '.min'})) //rename output to include .min
+		.pipe(gulp.dest(paths.scripts.dest)) //pipe to destination
+		.pipe(browserSync.stream())
+}
+
+gulp.task('scripts',['eslint'],function(){
+	return bundle();
 });
 
 //run jsx code through eslint

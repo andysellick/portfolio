@@ -1,15 +1,13 @@
+import React from 'react';
 
-//var HeaderBlock = React.createClass({displayName: 'HeaderBlock',
-class HeaderBlock extends React.Component {
-	resetDisabled(){
+var HeaderBlock = React.createClass({displayName: 'HeaderBlock',
+	resetDisabled: function(){
 		console.log('fixme');
-	}
-	
-	resetAll(){
+	},	
+	resetAll: function(){
 		console.log('fixme');
-	}
-	
-    render(){
+	},
+    render: function(){
         return (
 			<div className="headerinner">
 				<div className="container">
@@ -37,6 +35,6 @@ class HeaderBlock extends React.Component {
 			</div>
 		);
 	}
-}
-export default HeaderBlock
+});
+module.exports = HeaderBlock;
 

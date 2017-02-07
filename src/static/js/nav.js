@@ -1,15 +1,14 @@
+import React from 'react';
 
-class NavBlock extends React.Component {
-	resetAll(){	
-	}
-	selectAllFilter(){
-	}
-	filterByTarget(clicked,filtertype){
-		console.log('filterByTarget, component',clicked,filtertype);
-		console.log(this.props.filters);
+var NavBlock = React.createClass({displayName: 'NavBlock',
+	resetAll: function(){	
+	},
+	selectAllFilter: function(){
+	},
+	filterByTarget: function(clicked,filtertype){
 		this.props.onChange(clicked,filtertype);
-	}
-    render(){
+	},
+    render: function(){
 		var props = this.props.filters;
 		var self = this;
         return (
@@ -38,6 +37,7 @@ class NavBlock extends React.Component {
 													{currFilter}
 												</label>
 											);
+											
 										}
 									})}
 									<label className="btn btn-primary selectall">
@@ -54,5 +54,5 @@ class NavBlock extends React.Component {
 			</nav>
 		);
 	}
-}
-export default NavBlock
+});
+module.exports = NavBlock;
