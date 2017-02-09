@@ -5,6 +5,7 @@ import data from '../assets/work.json';
 import HeaderBlock from './header.js';
 import NavBlock from './nav.js';
 import ActiveFiltersBlock from './activefilters.js';
+import PopupBlock from './popup.js';
 
 var ClientData = React.createClass({
 	getInitialState: function() {
@@ -14,6 +15,9 @@ var ClientData = React.createClass({
 			//visibleprojects: [], //this holds all of the projects that should be shown currently, depending on pagination
 			filters: {},
 			activeFilters: [],
+			
+			popup: -1,
+			
 			globalSelect: 0,
 			filterSelect: [],
 			resetstatus: 0, //if reset status is 0, reset button is disabled
@@ -138,20 +142,10 @@ var ClientData = React.createClass({
 	},
 
 	//handle the popup windows containing additional info about projects
-	showPopup: function(i,job) {
-		// check if an element does not have the expanded state on it. If it doesn't add it and if not, leave as is.
-		if (this.state.matchingprojects[i].expanded !== true) {
-			this.state.matchingprojects[i].expanded = true;
-			this.state.matchingprojects[i].jsdropdown = true;
-			//this.setLocationHash(job);
-		} else{
-			this.state.matchingprojects[i].expanded = false;
-			//this.setLocationHash('');
-		}
-		this.forceUpdate();
+	showPopup: function(i) {
+		this.setState({ popup: i});
 	},
-
-
+	
 	//when a filter checkbox is clicked, set that filter accordingly
 	filterByTarget: function (clicked,filtertype){
 		console.log('filterByTarget');
@@ -359,8 +353,10 @@ var ClientData = React.createClass({
 	},
 
 	clearMobileMenus: function(){
+		/* fixme temporarily disabling
 		this.mobileHeaderState = '';
 		this.forceUpdate();
+		*/
 	},
 	
 	closeSearch: function(){
@@ -441,53 +437,15 @@ var ClientData = React.createClass({
 
 						<ul className="flexigrid">
 							{this.state.matchingprojects.map(function(project,i,key){
-								var techs = [];
-								var devs = [];
-								var designers = [];
-								var techhtml = '';
-								var devshtml = '';
-								var designershtml = '';
-								//create technologies list
-								if(typeof project.filters.technology !== 'undefined' && project.filters.technology[0] !== 'not set'){
-									for(var tech = 0; tech < project.filters.technology.length; tech++){
-										if(project.filters.technology[tech].length){
-											techs.push(<span className="smalltag" key={tech}>{project.filters.technology[tech]}</span>);
-										}
-									}
-									techhtml = <li><strong>Technology:</strong> {techs}</li>;
-								}
-								//create developers list
-								if(typeof project.filters.developer !== 'undefined' && project.filters.developer[0] !== 'not set'){
-									for(var dev = 0; dev < project.filters.developer.length; dev++){
-										if(project.filters.developer[dev].length){
-											devs.push(<span className="smalltag" key={dev}>{project.filters.developer[dev]}</span>);
-										}
-									}
-									devshtml = <li><strong>Developer:</strong> {devs}</li>
-								}
-								//create designers list
-								if(typeof project.filters.designer !== 'undefined' && project.filters.designer[0] !== 'not set'){
-									for(var design = 0; design < project.filters.designer.length; design++){
-										if(project.filters.designer[design].length){
-											designers.push(<span className="smalltag" key={design}>{project.filters.designer[design]}</span>);
-										}
-									}
-									designershtml = <li><strong>Designer:</strong> {designers}</li>;
-								}
+
 								var elstatus = '';
 								if(typeof project.filters.status !== 'undefined' && project.filters.status[0] !== 'not set'){
 									elstatus = <span className={project.filters.status ? 'projstatus' :'projstatus hidden'} data-stat={project.filters.status}></span>;
 								}
-								var demolink = <li></li>;
-								if(typeof project.filters.demo !== 'undefined' && project.filters.demo[0] !== 'not set'){
-									demolink = <li><a href={'../work/work.php?id=' + project.demoid} target='_blank'>Demo</a></li>;
-								}
 								var thumbnail = '';
-								var thumbnailpopup = '';
 								var thumbnailclass = '';
 								if(typeof project.img !== 'undefined' && project.img.length > 1){
 									thumbnail = <img src={'static/img/projects/' + project.img} className="thumbnailimg"/>;
-									thumbnailpopup = <img src={'static/img/projects/' + project.img} className="thumbnailimg"/>;
 									thumbnailclass = 'hasimg';
 								}
 								var launchdate = '';
@@ -501,46 +459,17 @@ var ClientData = React.createClass({
 
 								return (
 									<li className={project.hidden ? 'gridcol hidden' : 'gridcol'} key={i}>
-										<div className="project">
-											<div className={thumbnailclass + " thumbnail mainimg"} onClick={this.showPopup.bind(this,i,project.jobname)}>
+										<div className="project" onClick={this.showPopup.bind(this,i)}>
+											<div className={thumbnailclass + " thumbnail mainimg"}>
 												{thumbnail}
 												<span className="tag">{project.filters.format}</span>
 											</div>
 											<div className="firstinner">
-												<h2 className="jobname h5" onClick={this.showPopup.bind(this,i,project.jobname)}>{project.jobname}</h2>
+												<h2 className="jobname h5">{project.jobname}</h2>
 												<p className="client">{project.filters.client}, {project.filters.year} <span className="hidden">{launchdate}</span></p>
 							   					{elstatus}
 							   				</div>
-											<span className="btn more-details" onClick={this.showPopup.bind(this,i,project.jobname)}>more</span>
-
-											<div className={project.expanded ? 'detailswrapper visible' : 'detailswrapper'} onClick={this.showPopup.bind(this,i)}></div>
-											<div className={project.expanded ? 'details visible' : 'details'}>
-												<div className="leftcol thumbnail popupimg">
-													{thumbnailpopup}
-								   					{elstatus}
-												</div>
-												<div className="rightcol">
-													<div onClick={this.showPopup.bind(this,i)} className="closelnk" title="Back"><img src="static/img/cross.svg" alt=""/></div>
-													<h2 className="jobname">{project.jobname}</h2>
-													<h3 className="client">{project.filters.client}, {project.filters.year}</h3>
-													<p><span className="tag">{project.filters.format}</span></p>
-													<div className={project.desc ? 'desc' :'desc hidden'} dangerouslySetInnerHTML={{__html: project.desc}}></div>
-													<hr/>
-													<ul className="list">
-														<li className={project.filters.workload ? '' :'hidden'}><strong>Role:</strong> <span className="smalltag">{project.filters.workload}</span></li>
-														{techhtml}
-														{designershtml}
-														{devshtml}
-													</ul>
-												</div>
-												<ul className="links">
-													{demolink}
-													<li className={project.liveURL ? '' :'hidden'}><a href={project.liveURL} target='_blank' >Live</a></li>
-													<li className={project.savedURL ? '' :'hidden'}><a href={project.savedURL} target='_blank'>Original</a></li>
-													<li className={project.moreURL ? '' :'hidden'}><a href={project.moreURL} target='_blank'>More detail</a></li>
-													<li className={project.repo ? '' :'hidden'}><a href={project.repo} target='_blank'>Repo</a></li>
-												</ul>
-											</div>
+											<span className="btn more-details">more</span>
 										</div>
 									</li>
 								);
@@ -553,6 +482,7 @@ var ClientData = React.createClass({
 						</div>
 					</div>
 				</main>
+				<PopupBlock project={this.state.projects[this.state.popup]} closefunction={this.showPopup}/>
 			</div>
 		);
 	}
@@ -564,8 +494,6 @@ var ClientData = React.createClass({
 		usehash = usehash.replace(/ /g,'_').replace(/'/g,'');
 		location.hash = usehash;
 	},
-
-
 	//on page load, check the hash for what popup we should be showing
 	checkPageHash: function(){
 		var currhash = location.hash.replace('#','').replace(/_/g,' ');

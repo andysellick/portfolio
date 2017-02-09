@@ -6,6 +6,7 @@ var NavBlock = React.createClass({displayName: 'NavBlock',
 	selectAllFilter: function(){
 	},
 	filterByTarget: function(clicked,filtertype){
+		console.log('component filterByTarget');
 		this.props.onChange(clicked,filtertype);
 	},
     render: function(){
