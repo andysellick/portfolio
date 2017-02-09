@@ -6,6 +6,7 @@ import HeaderBlock from './header.js';
 import NavBlock from './nav.js';
 import ActiveFiltersBlock from './activefilters.js';
 import PopupBlock from './popup.js';
+import ProjectBlock from './project.js';
 
 var ClientData = React.createClass({
 	getInitialState: function() {
@@ -435,46 +436,8 @@ var ClientData = React.createClass({
 						
 						<div className={this.state.matchingprojects.length != 0 ? 'hidden' : ''}>No matching results found.</div>
 
-						<ul className="flexigrid">
-							{this.state.matchingprojects.map(function(project,i,key){
+						<ProjectBlock projects={this.state.matchingprojects} showpopup={this.showPopup} startat={0} perpage={20}/>
 
-								var elstatus = '';
-								if(typeof project.filters.status !== 'undefined' && project.filters.status[0] !== 'not set'){
-									elstatus = <span className={project.filters.status ? 'projstatus' :'projstatus hidden'} data-stat={project.filters.status}></span>;
-								}
-								var thumbnail = '';
-								var thumbnailclass = '';
-								if(typeof project.img !== 'undefined' && project.img.length > 1){
-									thumbnail = <img src={'static/img/projects/' + project.img} className="thumbnailimg"/>;
-									thumbnailclass = 'hasimg';
-								}
-								var launchdate = '';
-								if(typeof project.date !== 'undefined'){
-									launchdate = project.date;
-								}
-								var zorglink = '';
-								if(typeof project.zorg !== 'undefined'){
-									zorglink = <li><a href={project.zorg} target="_blank">Campaign stats</a> (requires login)</li>;
-								}
-
-								return (
-									<li className={project.hidden ? 'gridcol hidden' : 'gridcol'} key={i}>
-										<div className="project" onClick={this.showPopup.bind(this,i)}>
-											<div className={thumbnailclass + " thumbnail mainimg"}>
-												{thumbnail}
-												<span className="tag">{project.filters.format}</span>
-											</div>
-											<div className="firstinner">
-												<h2 className="jobname h5">{project.jobname}</h2>
-												<p className="client">{project.filters.client}, {project.filters.year} <span className="hidden">{launchdate}</span></p>
-							   					{elstatus}
-							   				</div>
-											<span className="btn more-details">more</span>
-										</div>
-									</li>
-								);
-							}, this)}
-						</ul>
 						<div className={this.state.matchingprojects.length != 0 ? 'pagination' : 'pagination hidden'}>
 							<span className="position">Page {this.state.onpage + 1} of {Math.ceil(this.state.matchingprojects.length / this.state.perpage)}</span>
 							<span className={this.state.onpage + 1 == 1 ? 'btn disabled' : 'btn'}  onClick={this.prevPage}>Prev</span>
