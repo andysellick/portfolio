@@ -14,9 +14,8 @@ var ClientData = React.createClass({
 		return {
 			projects: [], //this holds all of the projects
 			matchingprojects: [], //this holds all of the projects that match the current filter/search state
-			//visibleprojects: [], //this holds all of the projects that should be shown currently, depending on pagination
-			filters: {},
-			activeFilters: [],
+			filters: {}, //this holds all the possible filters
+			activeFilters: [], //this holds chosen filters only
 			
 			popup: -1,
 			perpage: 12, //number of items to show per page
@@ -150,18 +149,19 @@ var ClientData = React.createClass({
 	
 	//when a filter checkbox is clicked, set that filter accordingly
 	filterByTarget: function (clicked,filtertype){
-		console.log('filterByTarget');
-		this.state.searchtext = '';
-		for(var i = 0; i < this.state.filters[filtertype].length; i++){
-			if(this.state.filters[filtertype][i].name === clicked){
-				if(this.state.filters[filtertype][i].checked === 1){
-					this.state.filters[filtertype][i].checked = 0;
-				}
-				else {
-					this.state.filters[filtertype][i].checked = 1;
-				}
+		console.log('filterByTarget',filtertype,clicked);
+		console.log(this.state.filters);
+		var filters = this.state.filters;
+		
+		for(var i = 0; i < filters[filtertype].length; i++){
+			if(filters[filtertype][i].name === clicked){
+				filters[filtertype][i].checked = 1 - filters[filtertype][i].checked;
+				break;
 			}
 		}
+		this.setState({filters: filters});
+		
+		/*
 		var stopLoop = false;
 
 		for (var key2 in this.state.filters) {
@@ -178,6 +178,7 @@ var ClientData = React.createClass({
 		}
 		this.resetPagePosition();
 		this.displayProjects();
+		*/
 	},
 
 	//determine 
@@ -419,12 +420,8 @@ var ClientData = React.createClass({
 									<span className="filt" data-type={filterkey} onClick={this.clearfilter}>{filterkey}</span>
 								);
 							}, this)}
-						</div>
-						
-						<PaginationBlock length={this.state.matchingprojects.length} onpage={this.state.onpage} perpage={this.state.perpage} changePage={this.changePage}/>					
-						
-						<div className={this.state.matchingprojects.length != 0 ? 'hidden' : ''}>No matching results found.</div>
-						
+						</div>						
+						<PaginationBlock length={this.state.matchingprojects.length} onpage={this.state.onpage} perpage={this.state.perpage} changePage={this.changePage}/>																	
 						<ProjectBlock projects={this.state.matchingprojects} showpopup={this.showPopup} onpage={this.state.onpage} perpage={this.state.perpage}/>
 						<PaginationBlock length={this.state.matchingprojects.length} onpage={this.state.onpage} perpage={this.state.perpage} changePage={this.changePage}/>
 					</div>

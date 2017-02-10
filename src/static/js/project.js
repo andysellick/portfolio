@@ -4,8 +4,8 @@ var ProjectBlock = React.createClass({
 	showPopup: function(i){
 		this.props.showpopup(i);
 	},
-    render: function(){
-		var projects = this.props.projects.slice(this.props.onpage * this.props.perpage,(this.props.onpage * this.props.perpage) + this.props.perpage);
+	//if there are projects to show, display them
+	showProjects: function(projects){
 		return(
 			<ul className="flexigrid">
 				{projects.map(function(project,i,key){
@@ -39,7 +39,17 @@ var ProjectBlock = React.createClass({
 					);
 				}, this)}
 			</ul>
+		);		
+	},
+	//if there is nothing to show, display a message
+	showNoProjects: function(){
+		return (
+			<div className=''>No matching results found.</div>
 		);
+	},	
+    render: function(){
+		var projects = this.props.projects.slice(this.props.onpage * this.props.perpage,(this.props.onpage * this.props.perpage) + this.props.perpage);		
+		return(projects.length > 0 ? this.showProjects(projects) : this.showNoProjects());
 	}
 });
 module.exports = ProjectBlock;

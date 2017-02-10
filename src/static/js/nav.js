@@ -6,7 +6,7 @@ var NavBlock = React.createClass({displayName: 'NavBlock',
 	selectAllFilter: function(){
 	},
 	filterByTarget: function(clicked,filtertype){
-		console.log('component filterByTarget');
+		//console.log('component filterByTarget');
 		this.props.onChange(clicked,filtertype);
 	},
     render: function(){
@@ -22,18 +22,13 @@ var NavBlock = React.createClass({displayName: 'NavBlock',
 								<span className="droptrigger"><span className="droptriggerinner">{filtertype}</span></span>
 								<div className="dropcontent">
 									{Object.keys(thisfilter).map(function(filter,j){
-										var breakon = '';
 										//console.log(filtersObject[filtertype].length, filtertype, j,j % Math.ceil(filtersObject[filtertype].length / 4));
-										//combined with css flexbox, do clever column sorting layout
-										if(j % Math.ceil(thisfilter.length / 4) === 0){
-											breakon = 'newcolumn';
-										}
 										var currFilter = thisfilter[filter].name;
 										var checked = thisfilter[filter];
 
 										if(currFilter.length){
 											return(
-												<label className={breakon + ' filterlabel'} key={j}>
+												<label className='filterlabel' key={j}>
 													<input type="checkbox" name={currFilter} checked={checked.checked ? 'checked' : ''} onChange={self.filterByTarget.bind(null,currFilter,filtertype)}/>
 													{currFilter}
 												</label>
