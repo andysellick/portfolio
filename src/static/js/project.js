@@ -5,9 +5,10 @@ var ProjectBlock = React.createClass({
 		this.props.showpopup(i);
 	},
     render: function(){
+		var projects = this.props.projects.slice(this.props.onpage * this.props.perpage,(this.props.onpage * this.props.perpage) + this.props.perpage);
 		return(
 			<ul className="flexigrid">
-				{this.props.projects.map(function(project,i,key){
+				{projects.map(function(project,i,key){
 					var bg = '';
 					if(typeof project.img !== 'undefined' && project.img.length > 1){
 						bg = {backgroundImage: 'url(static/img/projects/' + project.img + ')'}

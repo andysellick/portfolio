@@ -7,6 +7,7 @@ import NavBlock from './nav.js';
 import ActiveFiltersBlock from './activefilters.js';
 import PopupBlock from './popup.js';
 import ProjectBlock from './project.js';
+import PaginationBlock from './pagination.js';
 
 var ClientData = React.createClass({
 	getInitialState: function() {
@@ -18,13 +19,13 @@ var ClientData = React.createClass({
 			activeFilters: [],
 			
 			popup: -1,
+			perpage: 12, //number of items to show per page
+			onpage: 0, //current page
 			
 			globalSelect: 0,
 			filterSelect: [],
 			resetstatus: 0, //if reset status is 0, reset button is disabled
 			mobileHeaderState: '', //controls visibility of mobile menu/search by applying a class
-			perpage: 20, //number of items to show per page
-			onpage: 0 //current page
 		};
 	},
 
@@ -323,7 +324,7 @@ var ClientData = React.createClass({
 		this.resetPagePosition();
 		this.forceUpdate();
 	},
-
+/*
 	//show all projects regardless
 	showAllProjects: function(){
 		this.state.matchingprojects = [];
@@ -332,7 +333,7 @@ var ClientData = React.createClass({
 		}
 		this.paginateVisible();
 	},
-
+*/
 	//clicking on one of the 'active filters' underneath the menu
 	clearfilter: function(e){
 		var tofind = e.target.dataset.type;
@@ -386,23 +387,15 @@ var ClientData = React.createClass({
 	resetPagePosition: function(){
 		this.state.onpage = 0;
 	},
-
-	//move position to the next page of results
-	nextPage: function(){
-		this.state.onpage = Math.min(Math.ceil((this.state.matchingprojects.length / this.state.perpage) - 1),this.state.onpage + 1);
-		this.paginateVisible();
-		this.forceUpdate();
-	},
-
-	//move position to the previous page of results
-	prevPage: function(){
-		this.state.onpage = Math.max(0,this.state.onpage - 1);
-		this.paginateVisible();
-		this.forceUpdate();
+	
+	//change page using navigation
+	changePage: function(direction){
+		//var newdir = parseInt(this.state.onpage + direction);
+		this.setState({onpage:direction});
 	},
 
 	render: function() {
-		console.log('render');
+		console.log('render',this.state.matchingprojects.length);
 		var self = this;
 		var filtersObject = this.state.filters;
 		var resetdisabled = 'disabled';
@@ -428,21 +421,12 @@ var ClientData = React.createClass({
 							}, this)}
 						</div>
 						
-						<div className={this.state.matchingprojects.length != 0 ? 'pagination' : 'pagination hidden'}>
-							<span className="position">Page {this.state.onpage + 1} of {Math.ceil(this.state.matchingprojects.length / this.state.perpage)}</span>
-							<span className={this.state.onpage + 1 == 1 ? 'btn disabled' : 'btn'}  onClick={this.prevPage}>Prev</span>
-							<span className={this.state.onpage + 1 == Math.ceil(this.state.matchingprojects.length / this.state.perpage) ? 'btn disabled' : 'btn'} onClick={this.nextPage}>Next</span>
-						</div>
+						<PaginationBlock length={this.state.matchingprojects.length} onpage={this.state.onpage} perpage={this.state.perpage} changePage={this.changePage}/>					
 						
 						<div className={this.state.matchingprojects.length != 0 ? 'hidden' : ''}>No matching results found.</div>
-
-						<ProjectBlock projects={this.state.matchingprojects} showpopup={this.showPopup} startat={0} perpage={20}/>
-
-						<div className={this.state.matchingprojects.length != 0 ? 'pagination' : 'pagination hidden'}>
-							<span className="position">Page {this.state.onpage + 1} of {Math.ceil(this.state.matchingprojects.length / this.state.perpage)}</span>
-							<span className={this.state.onpage + 1 == 1 ? 'btn disabled' : 'btn'}  onClick={this.prevPage}>Prev</span>
-							<span className={this.state.onpage + 1 == Math.ceil(this.state.matchingprojects.length / this.state.perpage) ? 'btn disabled' : 'btn'} onClick={this.nextPage}>Next</span>
-						</div>
+						
+						<ProjectBlock projects={this.state.matchingprojects} showpopup={this.showPopup} onpage={this.state.onpage} perpage={this.state.perpage}/>
+						<PaginationBlock length={this.state.matchingprojects.length} onpage={this.state.onpage} perpage={this.state.perpage} changePage={this.changePage}/>
 					</div>
 				</main>
 				<PopupBlock project={this.state.projects[this.state.popup]} closefunction={this.showPopup}/>
