@@ -27,7 +27,7 @@ var ProjectBlock = React.createClass({
 									{project.filters.status[0] !== 'not set' &&
 										<span className='projstatus' data-stat={project.filters.status}></span>
 									}
-									<span className="tag">{project.filters.format}</span>
+									<span className="category">{project.filters.format}</span>
 								</div>
 								<div className="firstinner">
 									<h2 className="jobname h5">{project.jobname}</h2>

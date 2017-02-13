@@ -22,7 +22,7 @@ var PopupBlock = React.createClass({
 						<div onClick={this.closePopup.bind()} className="closelnk" title="Back"><img src="static/img/cross.svg" alt=""/></div>
 						<h2 className="jobname">{project.jobname}</h2>
 						<h3 className="client">{project.filters.client}, {project.filters.year}</h3>
-						<p><span className="tag">{project.filters.format}</span></p>
+						<p><span className="category">{project.filters.format}</span></p>
 						<div className={project.desc ? 'desc' :'desc hidden'} dangerouslySetInnerHTML={{__html: project.desc}}></div>
 						<hr/>
 						<ul className="list">

@@ -5,9 +5,9 @@ var NavBlock = React.createClass({displayName: 'NavBlock',
 	},
 	selectAllFilter: function(){
 	},
-	filterByTarget: function(clicked,filtertype){
+	filterByTarget: function(clicked,filtertype,j){
 		//console.log('component filterByTarget');
-		this.props.onChange(clicked,filtertype);
+		this.props.onChange(clicked,filtertype,j);
 	},
     render: function(){
 		var props = this.props.filters;
@@ -29,7 +29,7 @@ var NavBlock = React.createClass({displayName: 'NavBlock',
 										if(currFilter.length){
 											return(
 												<label className='filterlabel' key={j}>
-													<input type="checkbox" name={currFilter} checked={checked.checked ? 'checked' : ''} onChange={self.filterByTarget.bind(null,currFilter,filtertype)}/>
+													<input type="checkbox" name={currFilter} checked={checked.checked ? 'checked' : ''} onChange={self.filterByTarget.bind(null,currFilter,filtertype,j)}/>
 													{currFilter}
 												</label>
 											);

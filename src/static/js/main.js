@@ -34,7 +34,7 @@ var ClientData = React.createClass({
 		
 		//var activeFilters = this.setActiveFilters(); //create a temporary array of all active filters
 		
-		console.log('filters',filters);
+		//console.log('filters',filters);
 		//console.log('activeFilters',activeFilters);
 
 		//insert the sorted project data into the state
@@ -148,18 +148,55 @@ var ClientData = React.createClass({
 	},
 	
 	//when a filter checkbox is clicked, set that filter accordingly
-	filterByTarget: function (clicked,filtertype){
-		console.log('filterByTarget',filtertype,clicked);
-		console.log(this.state.filters);
+	filterByTarget: function (clicked,filtertype,number){
+		console.log('filterByTarget',filtertype,clicked,number);
+		//console.log(this.state.filters);
 		var filters = this.state.filters;
+		var clickedfilters = {};
+		var matchedprojects = [];
 		
-		for(var i = 0; i < filters[filtertype].length; i++){
-			if(filters[filtertype][i].name === clicked){
-				filters[filtertype][i].checked = 1 - filters[filtertype][i].checked;
-				break;
+		filters[filtertype][number].checked = 1 - filters[filtertype][number].checked; //toggle the filter on or off
+		//console.log(filters[filtertype][number].checked);
+		
+		//first find all clicked filters and put them into a new object
+		Object.keys(filters).forEach(function(key,index){
+			for(var i = 0; i < filters[key].length; i++){
+				if(filters[key][i].checked){
+					if(!clickedfilters.hasOwnProperty(key)){
+						clickedfilters[key] = [];
+					}
+					clickedfilters[key].push(filters[key][i]);
+				}
 			}
+		});
+		console.log('clickedfilters',clickedfilters);
+
+		//then go through all the projects and see if they match these chosen filters
+		for(var p = 0; p < this.state.projects.length; p++){
+			var thisp = this.state.projects[p];
+			var matches = 1;
+			Object.keys(clickedfilters).forEach(function(key,index){
+				//console.log('clickedfilters loop',key,clickedfilters[key].length,thisp.filters);
+				//console.log('thisp.filters',key,index,thisp.filters[key],clickedfilters[key]);
+				var matchesfilter = 0;
+				for(var f = 0; f < clickedfilters[key].length; f++){
+					if(thisp.filters[key].indexOf(clickedfilters[key][f].name) !== -1){
+						//console.log('Matched:',thisp.jobname);
+						matchesfilter = 1;
+					}
+				}
+				if(!matchesfilter){
+					matches = 0;
+				}
+			});
+			if(matches){
+				console.log('Matched',thisp.jobname);
+				matchedprojects.push(thisp);
+			}
+
 		}
-		this.setState({filters: filters});
+		
+		this.setState({filters: filters, activeFilters: clickedfilters, matchingprojects: matchedprojects});
 		
 		/*
 		var stopLoop = false;
@@ -412,15 +449,7 @@ var ClientData = React.createClass({
 				</header>
 				<main className="main" onClick={this.clearMobileMenus}>
 					<div className="container">
-						<ActiveFiltersBlock/>						
-						<div className="activefilters">
-							{this.state.activeFilters.map(function(filter,i,key){
-								var filterkey = this.state.activeFilters[i].name;
-								return (
-									<span className="filt" data-type={filterkey} onClick={this.clearfilter}>{filterkey}</span>
-								);
-							}, this)}
-						</div>						
+						<ActiveFiltersBlock filters={this.state.activeFilters}/>						
 						<PaginationBlock length={this.state.matchingprojects.length} onpage={this.state.onpage} perpage={this.state.perpage} changePage={this.changePage}/>																	
 						<ProjectBlock projects={this.state.matchingprojects} showpopup={this.showPopup} onpage={this.state.onpage} perpage={this.state.perpage}/>
 						<PaginationBlock length={this.state.matchingprojects.length} onpage={this.state.onpage} perpage={this.state.perpage} changePage={this.changePage}/>
