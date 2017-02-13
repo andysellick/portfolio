@@ -28,7 +28,7 @@ var NavBlock = React.createClass({displayName: 'NavBlock',
 
 										if(currFilter.length){
 											return(
-												<label className='filterlabel' key={j}>
+												<label className='filterlabel'>
 													<input type="checkbox" name={currFilter} checked={checked.checked ? 'checked' : ''} onChange={self.filterByTarget.bind(null,currFilter,filtertype,j)}/>
 													{currFilter}
 												</label>

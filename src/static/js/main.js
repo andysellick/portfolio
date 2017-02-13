@@ -170,32 +170,7 @@ var ClientData = React.createClass({
 			}
 		});
 		console.log('clickedfilters',clickedfilters);
-
-		//then go through all the projects and see if they match these chosen filters
-		for(var p = 0; p < this.state.projects.length; p++){
-			var thisp = this.state.projects[p];
-			var matches = 1;
-			Object.keys(clickedfilters).forEach(function(key,index){
-				//console.log('clickedfilters loop',key,clickedfilters[key].length,thisp.filters);
-				//console.log('thisp.filters',key,index,thisp.filters[key],clickedfilters[key]);
-				var matchesfilter = 0;
-				for(var f = 0; f < clickedfilters[key].length; f++){
-					if(thisp.filters[key].indexOf(clickedfilters[key][f].name) !== -1){
-						//console.log('Matched:',thisp.jobname);
-						matchesfilter = 1;
-					}
-				}
-				if(!matchesfilter){
-					matches = 0;
-				}
-			});
-			if(matches){
-				console.log('Matched',thisp.jobname);
-				matchedprojects.push(thisp);
-			}
-
-		}
-		
+		matchedprojects = this.updateProjects(clickedfilters);
 		this.setState({filters: filters, activeFilters: clickedfilters, matchingprojects: matchedprojects});
 		
 		/*
@@ -217,6 +192,60 @@ var ClientData = React.createClass({
 		this.displayProjects();
 		*/
 	},
+	
+	//go through all the projects and see if they match these chosen filters
+	updateProjects: function(clickedfilters){
+		var matchedprojects = [];
+		for(var p = 0; p < this.state.projects.length; p++){
+			var thisp = this.state.projects[p];
+			var matches = 1;
+			Object.keys(clickedfilters).forEach(function(key,index){
+				//console.log('clickedfilters loop',key,clickedfilters[key].length,thisp.filters);
+				//console.log('thisp.filters',key,index,thisp.filters[key],clickedfilters[key]);
+				var matchesfilter = 0;
+				for(var f = 0; f < clickedfilters[key].length; f++){
+					if(thisp.filters[key].indexOf(clickedfilters[key][f].name) !== -1){
+						//console.log('Matched:',thisp.jobname);
+						matchesfilter = 1;
+					}
+				}
+				if(!matchesfilter){
+					matches = 0;
+				}
+			});
+			if(matches){
+				matchedprojects.push(thisp);
+			}
+		}
+		return(matchedprojects);
+	},
+	
+	//clicking on one of the 'active filters' underneath the menu
+	clearFilter: function(name){
+		var activeFilters = this.state.activeFilters;
+		delete activeFilters[name];
+		var matchedprojects = this.updateProjects(activeFilters);
+		this.setState({activeFilters: activeFilters,matchingprojects: matchedprojects});
+
+		/*
+		var tofind = e.target.dataset.type;
+		//first remove the active filter
+		for(var x = 0; x < this.state.activeFilters.length; x++){
+			if(this.state.activeFilters[x].name === tofind){
+				this.state.activeFilters.splice(x,1);
+				break;
+			}
+		}
+		//then reset the individual filters themselves
+		for(var filt = 0; filt < this.state.filters[tofind].length; filt++){
+			this.state.filters[tofind][filt].checked = 0;
+		}
+		this.state.searchtext = '';
+		this.resetPagePosition();
+		this.displayProjects(); //then update the displayed projects
+		this.forceUpdate();
+		*/
+	},	
 
 	//determine 
 	setActiveFilters: function(){
@@ -372,25 +401,7 @@ var ClientData = React.createClass({
 		this.paginateVisible();
 	},
 */
-	//clicking on one of the 'active filters' underneath the menu
-	clearfilter: function(e){
-		var tofind = e.target.dataset.type;
-		//first remove the active filter
-		for(var x = 0; x < this.state.activeFilters.length; x++){
-			if(this.state.activeFilters[x].name === tofind){
-				this.state.activeFilters.splice(x,1);
-				break;
-			}
-		}
-		//then reset the individual filters themselves
-		for(var filt = 0; filt < this.state.filters[tofind].length; filt++){
-			this.state.filters[tofind][filt].checked = 0;
-		}
-		this.state.searchtext = '';
-		this.resetPagePosition();
-		this.displayProjects(); //then update the displayed projects
-		this.forceUpdate();
-	},
+
 
 	clearMobileMenus: function(){
 		/* fixme temporarily disabling
@@ -449,7 +460,7 @@ var ClientData = React.createClass({
 				</header>
 				<main className="main" onClick={this.clearMobileMenus}>
 					<div className="container">
-						<ActiveFiltersBlock filters={this.state.activeFilters}/>						
+						<ActiveFiltersBlock filters={this.state.activeFilters} clearFilter={this.clearFilter}/>						
 						<PaginationBlock length={this.state.matchingprojects.length} onpage={this.state.onpage} perpage={this.state.perpage} changePage={this.changePage}/>																	
 						<ProjectBlock projects={this.state.matchingprojects} showpopup={this.showPopup} onpage={this.state.onpage} perpage={this.state.perpage}/>
 						<PaginationBlock length={this.state.matchingprojects.length} onpage={this.state.onpage} perpage={this.state.perpage} changePage={this.changePage}/>

@@ -2,6 +2,7 @@ import React from 'react';
 
 var ProjectBlock = React.createClass({
 	showPopup: function(i){
+		i += this.props.onpage * this.props.perpage;
 		this.props.showpopup(i);
 	},
 	//if there are projects to show, display them
