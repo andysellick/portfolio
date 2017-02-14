@@ -20,9 +20,10 @@ var ClientData = React.createClass({
 			perpage: 12, //number of items to show per page
 			onpage: 0, //current page
 			resetstatus: 0, //if reset status is 0, reset button is disabled
+			searchtext: '',
 			
-			globalSelect: 0,
-			filterSelect: [],
+			
+
 			mobileHeaderState: '', //controls visibility of mobile menu/search by applying a class
 		};
 	},
@@ -217,10 +218,28 @@ var ClientData = React.createClass({
 		}
 		var activeFilters = {};
 		var matchingprojects = this.state.projects;
-		//FIXME add in text search reset
-		this.setState({filters: filters, activeFilters: activeFilters, matchingprojects: matchingprojects, onpage: 0});
+		this.setState({filters: filters, searchtext: '', activeFilters: activeFilters, matchingprojects: matchingprojects, onpage: 0});
 	},
 	
+	//handles text input into the search box
+	typeSearch: function(typed){
+		var matchingprojects = [];
+
+		if(typed.length > 2){
+			for(var p = 0; p < this.state.matchingprojects.length; p++){
+				var searchthis = this.state.matchingprojects[p].jobname + ' ' + this.state.matchingprojects[p].desc;
+				var found = searchthis.toLowerCase().match(typed.toLowerCase());
+				if(found){
+					matchingprojects.push(this.state.matchingprojects[p]);
+				}
+			}
+		}
+		else {
+			var clickedfilters = this.findAllClickedFilters();
+			matchingprojects = this.updateProjects(clickedfilters);			
+		}
+		this.setState({searchtext: typed, matchingprojects: matchingprojects});
+	},	
 	
 	/* smaller functions that get used by other top level functions */
 	
@@ -252,57 +271,6 @@ var ClientData = React.createClass({
 	/* FIXME all functions below this line (apart from render) are potentially unused and need updating or removing */
 		
 		
-	//handles text input into the search box
-	typeSearch: function(e){
-		this.state.resetstatus = 1;
-		var typed = e.target.value;
-		this.state.searchtext = typed;
-
-		if(typed.length > 2){
-			this.displayProjects(); //reset the search to those things found by filters, otherwise bug caused by invalid search that can't be deleted
-			this.state.resetstatus = 1;
-			//this.state.visibleprojects = [];
-			var matches = this.state.matchingprojects;
-			this.state.matchingprojects = [];
-
-			for(var p = 0; p < matches.length; p++){
-				var thisproj = matches[p].jobname + ' ' + matches[p].desc;
-				var found = thisproj.toLowerCase().match(typed.toLowerCase());
-				if(found){
-					this.state.matchingprojects.push(matches[p]);
-				}
-			}
-		}
-		else {// if(typed.length === 0){
-			this.state.resetstatus = 0;
-			this.displayProjects();
-		}
-		if(typed.length > 0){
-			this.state.resetstatus = 1;
-		}
-		this.resetPagePosition();
-		this.paginateVisible();
-		this.forceUpdate();
-	},
-
-	//clear the contents of the search box
-	clearSearch: function(){
-		this.state.searchtext = '';
-		this.state.resetstatus = 0;
-		this.displayProjects();
-		this.resetPagePosition();
-		this.forceUpdate();
-	},
-/*
-	//show all projects regardless
-	showAllProjects: function(){
-		this.state.matchingprojects = [];
-		for(var p = 0; p < this.state.projects.length; p++){
-			this.state.matchingprojects.push(this.state.projects[p]);
-		}
-		this.paginateVisible();
-	},
-*/
 
 	clearMobileMenus: function(){
 		/* fixme temporarily disabling
@@ -339,15 +307,15 @@ var ClientData = React.createClass({
 	},
 	
 	render: function() {
-		console.log('render',this.state.matchingprojects.length);
-		var resetstatus = 1;
-		if(Object.keys(this.state.activeFilters).length === 0 && this.state.activeFilters.constructor === Object){
+		console.log('render',this.state.matchingprojects);
+		var resetstatus = 1; //this value means the reset button is clickable
+		if((Object.keys(this.state.activeFilters).length === 0 && this.state.activeFilters.constructor === Object) && this.state.searchtext.length === 0){
 			resetstatus = 0;
 		}
 		return (
 			<div>
 				<header className={this.mobileHeaderState + ' header'}>
-					<HeaderBlock showing={this.state.matchingprojects.length} total={this.state.projects.length} showreset={resetstatus} resetall={this.resetAll}/>
+					<HeaderBlock showing={this.state.matchingprojects.length} total={this.state.projects.length} showreset={resetstatus} resetall={this.resetAll} searchtext={this.state.searchtext} typeSearch={this.typeSearch}/>
 					<NavBlock filters={this.state.filters} onChange={this.filterByTarget} selectAll={this.selectAllFilter}/>
 				</header>
 				<main className="main" onClick={this.clearMobileMenus}>

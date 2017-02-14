@@ -7,7 +7,6 @@ var NavBlock = React.createClass({displayName: 'NavBlock',
 		this.props.selectAll(thisfilter);
 	},
 	filterByTarget: function(clicked,filtertype,j){
-		//console.log('component filterByTarget');
 		this.props.onChange(clicked,filtertype,j);
 	},
     render: function(){
@@ -23,7 +22,6 @@ var NavBlock = React.createClass({displayName: 'NavBlock',
 								<span className="droptrigger"><span className="droptriggerinner">{filtertype}</span></span>
 								<div className="dropcontent">
 									{Object.keys(thisfilter).map(function(filter,j){
-										//console.log(filtersObject[filtertype].length, filtertype, j,j % Math.ceil(filtersObject[filtertype].length / 4));
 										var currFilter = thisfilter[filter].name;
 										var checked = thisfilter[filter];
 

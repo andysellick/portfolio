@@ -1,15 +1,12 @@
 import React from 'react';
 
 var HeaderBlock = React.createClass({displayName: 'HeaderBlock',
-	resetDisabled: function(){
-		console.log('fixme');
-	},	
-	resetAll: function(){
-		if(this.props.showreset){
-			console.log('fixme');
-			this.props.resetall();
-		}
+	typeSearch: function(e){
+		this.props.typeSearch(e.target.value);
 	},
+	resetDisabled: function(){
+		console.log('resetDisabled fixme');
+	},	
     render: function(){
         return (
 			<div className="headerinner">
@@ -25,12 +22,12 @@ var HeaderBlock = React.createClass({displayName: 'HeaderBlock',
 								<span className="displaycount float-left">Showing {this.props.showing} of {this.props.total}</span>
 								<div className="searchbox float-left">
 									<div className="inputwrapper">
-										<input id="searchbox" type="search" placeholder="search..." value='FIXME' onChange={this.typeSearch}/>
+										<input id="searchbox" type="search" placeholder="search..." value={this.props.searchtext} onChange={this.typeSearch}/>
 									</div>
 									<span className="closesearch mobile-only" onClick={this.closeSearch}><img src="static/img/cross-white.svg" alt="Close"/></span>
 									<button type="submit" className="btn hidden" onClick={this.clearSearch}>Clear</button>
 								</div>
-								<span className={this.props.showreset ? 'btn-primary btn float-left mobile-hide' : 'disabled btn float-left mobile-hide'} onClick={this.resetAll}>Reset</span>
+								<span className={this.props.showreset ? 'btn-primary btn float-left mobile-hide' : 'disabled btn float-left mobile-hide'} onClick={this.props.resetall}>Reset</span>
 							</div>
 						</div>
 					</div>
