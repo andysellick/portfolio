@@ -1,4 +1,3 @@
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import data from '../assets/work.json';
@@ -15,32 +14,24 @@ var ClientData = React.createClass({
 			projects: [], //this holds all of the projects
 			matchingprojects: [], //this holds all of the projects that match the current filter/search state
 			filters: {}, //this holds all the possible filters
-			activeFilters: [], //this holds chosen filters only
+			activeFilters: {}, //this holds chosen filters only
 			
 			popup: -1,
 			perpage: 12, //number of items to show per page
 			onpage: 0, //current page
+			resetstatus: 0, //if reset status is 0, reset button is disabled
 			
 			globalSelect: 0,
 			filterSelect: [],
-			resetstatus: 0, //if reset status is 0, reset button is disabled
 			mobileHeaderState: '', //controls visibility of mobile menu/search by applying a class
 		};
 	},
 
 	componentDidMount: function() {
 		var projects = this.sortProjectData(data);
-		var filters = this.extractAllFilters(projects);
-		
-		//var activeFilters = this.setActiveFilters(); //create a temporary array of all active filters
-		
-		//console.log('filters',filters);
-		//console.log('activeFilters',activeFilters);
-
+		var filters = this.extractAllFilters(projects);	
 		//insert the sorted project data into the state
-		//this.setState({	projects: projects, filters: filters, activeFilters: activeFilters },this.displayProjects);
 		this.setState({	projects: projects, matchingprojects: projects, filters: filters });
-		//this.checkPageHash();
 	},
 	
 	//get original data, sort projects by date, should only need to do this once
@@ -147,52 +138,6 @@ var ClientData = React.createClass({
 		this.setState({ popup: i});
 	},
 	
-	//when a filter checkbox is clicked, set that filter accordingly
-	filterByTarget: function (clicked,filtertype,number){
-		console.log('filterByTarget',filtertype,clicked,number);
-		//console.log(this.state.filters);
-		var filters = this.state.filters;
-		var clickedfilters = {};
-		var matchedprojects = [];
-		
-		filters[filtertype][number].checked = 1 - filters[filtertype][number].checked; //toggle the filter on or off
-		//console.log(filters[filtertype][number].checked);
-		
-		//first find all clicked filters and put them into a new object
-		Object.keys(filters).forEach(function(key,index){
-			for(var i = 0; i < filters[key].length; i++){
-				if(filters[key][i].checked){
-					if(!clickedfilters.hasOwnProperty(key)){
-						clickedfilters[key] = [];
-					}
-					clickedfilters[key].push(filters[key][i]);
-				}
-			}
-		});
-		console.log('clickedfilters',clickedfilters);
-		matchedprojects = this.updateProjects(clickedfilters);
-		this.setState({filters: filters, activeFilters: clickedfilters, matchingprojects: matchedprojects});
-		
-		/*
-		var stopLoop = false;
-
-		for (var key2 in this.state.filters) {
-			for (var e = 0; e < this.state.filters[key2].length; e++) {
-				if (stopLoop === false) {
-					if (this.state.filters[key2][e].checked === 0) {
-						this.state.globalSelect = 1;
-						stopLoop = true;
-					} else {
-						this.state.globalSelect = 0;
-					}
-				}
-			}
-		}
-		this.resetPagePosition();
-		this.displayProjects();
-		*/
-	},
-	
 	//go through all the projects and see if they match these chosen filters
 	updateProjects: function(clickedfilters){
 		var matchedprojects = [];
@@ -200,12 +145,9 @@ var ClientData = React.createClass({
 			var thisp = this.state.projects[p];
 			var matches = 1;
 			Object.keys(clickedfilters).forEach(function(key,index){
-				//console.log('clickedfilters loop',key,clickedfilters[key].length,thisp.filters);
-				//console.log('thisp.filters',key,index,thisp.filters[key],clickedfilters[key]);
 				var matchesfilter = 0;
 				for(var f = 0; f < clickedfilters[key].length; f++){
 					if(thisp.filters[key].indexOf(clickedfilters[key][f].name) !== -1){
-						//console.log('Matched:',thisp.jobname);
 						matchesfilter = 1;
 					}
 				}
@@ -220,136 +162,96 @@ var ClientData = React.createClass({
 		return(matchedprojects);
 	},
 	
-	//clicking on one of the 'active filters' underneath the menu
+	//when a filter checkbox is clicked, set that filter accordingly
+	filterByTarget: function (clicked,filtertype,number){
+		//console.log('filterByTarget',filtertype,clicked,number);
+		var filters = this.state.filters;
+		filters[filtertype][number].checked = 1 - filters[filtertype][number].checked; //toggle the filter on or off
+		var clickedfilters = this.findAllClickedFilters();
+		var matchingprojects = this.updateProjects(clickedfilters);
+		this.setState({filters: filters, activeFilters: clickedfilters, matchingprojects: matchingprojects});
+	},
+	
+	//clicking on one of the 'active filters' underneath the menu, clears all chosen filters in that group
 	clearFilter: function(name){
 		var activeFilters = this.state.activeFilters;
 		delete activeFilters[name];
+		var filters = this.switchAllFilters(name,0);
 		var matchedprojects = this.updateProjects(activeFilters);
-		this.setState({activeFilters: activeFilters,matchingprojects: matchedprojects});
-
-		/*
-		var tofind = e.target.dataset.type;
-		//first remove the active filter
-		for(var x = 0; x < this.state.activeFilters.length; x++){
-			if(this.state.activeFilters[x].name === tofind){
-				this.state.activeFilters.splice(x,1);
-				break;
-			}
-		}
-		//then reset the individual filters themselves
-		for(var filt = 0; filt < this.state.filters[tofind].length; filt++){
-			this.state.filters[tofind][filt].checked = 0;
-		}
-		this.state.searchtext = '';
-		this.resetPagePosition();
-		this.displayProjects(); //then update the displayed projects
-		this.forceUpdate();
-		*/
+		this.setState({filters: filters, activeFilters: activeFilters,matchingprojects: matchedprojects});
 	},	
-
-	//determine 
-	setActiveFilters: function(){
-		console.log('setActiveFilters');
-		var filters = this.state.filters;
-		var activeFilters = [];
-		//get all selected filters and add to activeFilters
-		for(var key in filters){
-			var obj = {'name': key, vals: []};
-			for(var filt = 0; filt < filters[key].length; filt++){
-				if(filters[key][filt].checked === 1){
-					obj.vals.push(filters[key][filt].name);
-				}
-			}
-			if(obj.vals.length){
-				activeFilters.push(obj);
-			}
-		}	
-		return(activeFilters);
-	},
 	
-	//called after filters have changed, updates show/hide status of projects accordingly
-	displayProjects: function(){	
-		console.log('displayProjects');		
-		var filters = this.state.filters;
-		
-		var resetstatus = 1;
-		//var activeFilters = this.changeActiveFilters(); //create a temporary array of all active filters
-		var matchingprojects = []; //holds any projects that should be shown, will be filtered shortly to fit the pagination
-		
-		if(this.state.activeFilters.length){
-			for(var p = 0; p < data.length; p++){
-				var showproj = 1;
-				for(var f = 0; f < this.state.activeFilters.length; f++){
-					if(showproj){
-						var showsect = 0;
-						var findfilter = this.state.activeFilters[f].name;
-						for(var thisfilt = 0; thisfilt < data[p].filters[findfilter].length; thisfilt++){
-							if(this.state.activeFilters[f].vals.indexOf(data[p].filters[findfilter][thisfilt]) !== -1){
-								showsect = 1;
-								break;
-							}
-						}
-						if(showsect){
-							showproj = 1;
-						}
-						else {
-							showproj = 0;
-						}
-					}
-				}
-				if(showproj){
-					matchingprojects.push(data[p]); //this project should be shown, so put it into the list to be shown
-				}
-			}
-			//this.paginateVisible();
-			this.setState({matchingprojects: matchingprojects});
+	//select all filters within a group, e.g. all clients
+	selectAllFilter: function(e){		
+		var name = e.target.name;
+		var onoroff = e.target.checked ? 1 : 0;
+		var filters = this.switchAllFilters(name,onoroff);
+		console.log(filters);
+
+		//add or remove this group of filters from active filters
+		var activeFilters = this.state.activeFilters;
+		if(onoroff){
+			activeFilters[name] = filters[name];
 		}
 		else {
-			//matchingprojects = this.state.projects;
-			//this.state.resetstatus = 0;
-			//this.showAllProjects();
+			delete activeFilters[name];
 		}
+		//update what projects are shown
+		var matchingprojects = this.updateProjects(activeFilters);
+		this.setState({filters: filters, activeFilters: activeFilters, matchingprojects: matchingprojects});
 	},
-/*
-	//do the pagination - only have projects in the visibleprojects state that fall within the current pagination boundaries
-	paginateVisible: function(){
-		this.state.visibleprojects = [];
-		var currstart = this.state.onpage * this.state.perpage;
-		var currend = Math.min(currstart + this.state.perpage,this.state.matchingprojects.length);
-
-		for(var g = currstart; g < currend; g++){
-			this.state.visibleprojects.push(this.state.matchingprojects[g]);
-		}
-	},
-*/
+	
+	//change page using navigation
+	changePage: function(direction){
+		//var newdir = parseInt(this.state.onpage + direction);
+		this.setState({onpage:direction});
+	},	
+	
 	//resets everything to default state
 	resetAll: function(){
-		for(var key in this.state.filters){
-			for(var f = 0; f < this.state.filters[key].length; f++){
-				this.state.filters[key][f].checked = 0;
+		var filters = this.state.filters;
+		for(var key in filters){
+			for(var f = 0; f < filters[key].length; f++){
+				filters[key][f].checked = 0;
 			}
 		}
-		this.resetPagePosition();
-		this.showAllProjects();
-		this.clearSearch();
-		this.state.resetstatus = 0;
+		var activeFilters = {};
+		var matchingprojects = this.state.projects;
+		//FIXME add in text search reset
+		this.setState({filters: filters, activeFilters: activeFilters, matchingprojects: matchingprojects, onpage: 0});
 	},
-
-	//select all filters within a group, e.g. all clients
-	selectAllFilter: function(e){
-		this.state.searchtext = '';
-		var filter = e.target.name;
-		var selectall = 0;
-		if(e.target.checked){
-			selectall = 1;
-		}
-		for(var filt = 0; filt < this.state.filters[filter].length; filt++){
-			this.state.filters[filter][filt].checked = selectall;
-		}
-		this.resetPagePosition();
-		this.displayProjects();
+	
+	
+	/* smaller functions that get used by other top level functions */
+	
+	//find all clicked filters and put them into a new object
+	findAllClickedFilters: function(){
+		var clickedfilters = {};
+		var filters = this.state.filters;
+		Object.keys(filters).forEach(function(key,index){
+			for(var i = 0; i < filters[key].length; i++){
+				if(filters[key][i].checked){
+					if(!clickedfilters.hasOwnProperty(key)){
+						clickedfilters[key] = [];
+					}
+					clickedfilters[key].push(filters[key][i]);
+				}
+			}
+		});
+		return(clickedfilters);
 	},
-
+	//set the checked status of all filters in a group
+	switchAllFilters: function(name,onoroff){
+		var filters = this.state.filters;
+		for(var f = 0; f < filters[name].length; f++){
+			filters[name][f].checked = onoroff;
+		}
+		return(filters);
+	},
+	
+	/* FIXME all functions below this line (apart from render) are potentially unused and need updating or removing */
+		
+		
 	//handles text input into the search box
 	typeSearch: function(e){
 		this.state.resetstatus = 1;
@@ -402,7 +304,6 @@ var ClientData = React.createClass({
 	},
 */
 
-
 	clearMobileMenus: function(){
 		/* fixme temporarily disabling
 		this.mobileHeaderState = '';
@@ -437,26 +338,17 @@ var ClientData = React.createClass({
 		this.state.onpage = 0;
 	},
 	
-	//change page using navigation
-	changePage: function(direction){
-		//var newdir = parseInt(this.state.onpage + direction);
-		this.setState({onpage:direction});
-	},
-
 	render: function() {
 		console.log('render',this.state.matchingprojects.length);
-		var self = this;
-		var filtersObject = this.state.filters;
-		var resetdisabled = 'disabled';
-		if(this.state.resetstatus === 1){
-			resetdisabled = 'btn-primary';
+		var resetstatus = 1;
+		if(Object.keys(this.state.activeFilters).length === 0 && this.state.activeFilters.constructor === Object){
+			resetstatus = 0;
 		}
-
 		return (
 			<div>
 				<header className={this.mobileHeaderState + ' header'}>
-					<HeaderBlock showing={this.state.matchingprojects.length} total={this.state.projects.length}/>
-					<NavBlock filters={this.state.filters} onChange={this.filterByTarget}/>
+					<HeaderBlock showing={this.state.matchingprojects.length} total={this.state.projects.length} showreset={resetstatus} resetall={this.resetAll}/>
+					<NavBlock filters={this.state.filters} onChange={this.filterByTarget} selectAll={this.selectAllFilter}/>
 				</header>
 				<main className="main" onClick={this.clearMobileMenus}>
 					<div className="container">
@@ -466,38 +358,10 @@ var ClientData = React.createClass({
 						<PaginationBlock length={this.state.matchingprojects.length} onpage={this.state.onpage} perpage={this.state.perpage} changePage={this.changePage}/>
 					</div>
 				</main>
-				<PopupBlock project={this.state.projects[this.state.popup]} closefunction={this.showPopup}/>
+				<PopupBlock project={this.state.matchingprojects[this.state.popup]} closefunction={this.showPopup}/>
 			</div>
 		);
 	}
-	
-/*
-	//given a job name, set the page hash to it
-	//fixme only problem with this is that if the hash is empty, the hash is left as simply '#', which causes the page to jump to the top of the screen, so this is disabled for now
-	setLocationHash: function(usehash){
-		usehash = usehash.replace(/ /g,'_').replace(/'/g,'');
-		location.hash = usehash;
-	},
-	//on page load, check the hash for what popup we should be showing
-	checkPageHash: function(){
-		var currhash = location.hash.replace('#','').replace(/_/g,' ');
-		var job = '';
-		if(currhash.length){
-			var found = -1;
-			for(var z = 0; z < this.state.projects.length; z++){
-				job = this.state.projects[z].jobname;
-				job = job.replace(/'/g,'');
-				if(job === currhash){
-					found = z;
-					break;
-				}
-			}
-			if(found !== -1){
-				this.showPopup(found,currhash);
-			}
-		}
-	},
-*/	
 });
 
 ReactDOM.render(

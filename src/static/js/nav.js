@@ -3,7 +3,8 @@ import React from 'react';
 var NavBlock = React.createClass({displayName: 'NavBlock',
 	resetAll: function(){	
 	},
-	selectAllFilter: function(){
+	selectAllFilter: function(thisfilter){
+		this.props.selectAll(thisfilter);
 	},
 	filterByTarget: function(clicked,filtertype,j){
 		//console.log('component filterByTarget');
@@ -37,7 +38,7 @@ var NavBlock = React.createClass({displayName: 'NavBlock',
 										}
 									})}
 									<label className="btn btn-primary selectall">
-										<input type="checkbox" name={filtertype} onChange={self.selectAllFilter}/> Select all
+										<input type="checkbox" name={filtertype} onChange={self.selectAllFilter.bind()}/> Select all
 									</label>
 								</div>
 							</li>

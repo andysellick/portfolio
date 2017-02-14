@@ -5,7 +5,10 @@ var HeaderBlock = React.createClass({displayName: 'HeaderBlock',
 		console.log('fixme');
 	},	
 	resetAll: function(){
-		console.log('fixme');
+		if(this.props.showreset){
+			console.log('fixme');
+			this.props.resetall();
+		}
 	},
     render: function(){
         return (
@@ -27,7 +30,7 @@ var HeaderBlock = React.createClass({displayName: 'HeaderBlock',
 									<span className="closesearch mobile-only" onClick={this.closeSearch}><img src="static/img/cross-white.svg" alt="Close"/></span>
 									<button type="submit" className="btn hidden" onClick={this.clearSearch}>Clear</button>
 								</div>
-								<span className='FIXME btn float-left mobile-hide' onClick={this.resetAll}>Reset</span>
+								<span className={this.props.showreset ? 'btn-primary btn float-left mobile-hide' : 'disabled btn float-left mobile-hide'} onClick={this.resetAll}>Reset</span>
 							</div>
 						</div>
 					</div>
