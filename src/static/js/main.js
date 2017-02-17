@@ -171,7 +171,7 @@ var ClientData = React.createClass({
 		filters[filtertype][number].checked = 1 - filters[filtertype][number].checked; //toggle the filter on or off
 		var clickedfilters = this.findAllClickedFilters();
 		var matchingprojects = this.updateProjects(clickedfilters);
-		this.setState({filters: filters, activeFilters: clickedfilters, matchingprojects: matchingprojects});
+		this.setState({filters: filters, activeFilters: clickedfilters, matchingprojects: matchingprojects, onpage: 0});
 	},
 	
 	//clicking on one of the 'active filters' underneath the menu, clears all chosen filters in that group
@@ -277,14 +277,7 @@ var ClientData = React.createClass({
 		return(filters);
 	},
 
-/*	
-	//given that changing filters could reduce visible results below the current view position, need to reset it
-	resetPagePosition: function(){
-		this.state.onpage = 0;
-	},
-*/
 	render: function() {
-		console.log('render');
 		var resetstatus = 1; //this value means the reset button is clickable
 		if((Object.keys(this.state.activeFilters).length === 0 && this.state.activeFilters.constructor === Object) && this.state.searchtext.length === 0){
 			resetstatus = 0;
