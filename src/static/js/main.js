@@ -223,22 +223,22 @@ var ClientData = React.createClass({
 	
 	//handles text input into the search box
 	typeSearch: function(typed){
-		var matchingprojects = [];
-
+		var clickedfilters = this.findAllClickedFilters();
+		var matchingprojects = this.updateProjects(clickedfilters);			
+		var onpage = this.state.onpage;
 		if(typed.length > 2){
-			for(var p = 0; p < this.state.matchingprojects.length; p++){
-				var searchthis = this.state.matchingprojects[p].jobname + ' ' + this.state.matchingprojects[p].desc;
+			var newmatchingprojects = [];
+			for(var p = 0; p < matchingprojects.length; p++){
+				var searchthis = matchingprojects[p].jobname + ' ' + matchingprojects[p].desc;
 				var found = searchthis.toLowerCase().match(typed.toLowerCase());
 				if(found){
-					matchingprojects.push(this.state.matchingprojects[p]);
+					newmatchingprojects.push(matchingprojects[p]);
 				}
 			}
+			matchingprojects = newmatchingprojects;
+			onpage = 0;
 		}
-		else {
-			var clickedfilters = this.findAllClickedFilters();
-			matchingprojects = this.updateProjects(clickedfilters);			
-		}
-		this.setState({searchtext: typed, matchingprojects: matchingprojects});
+		this.setState({searchtext: typed, matchingprojects: matchingprojects,onpage: onpage});
 	},	
 	
 	/* smaller functions that get used by other top level functions */
@@ -307,11 +307,13 @@ var ClientData = React.createClass({
 	},
 	
 	render: function() {
-		console.log('render',this.state.matchingprojects);
+		console.log('render');
 		var resetstatus = 1; //this value means the reset button is clickable
 		if((Object.keys(this.state.activeFilters).length === 0 && this.state.activeFilters.constructor === Object) && this.state.searchtext.length === 0){
 			resetstatus = 0;
 		}
+		//var onpage = Math.min(Math.ceil(this.state.matchingprojects.length / this.state.perpage),this.state.onpage);
+
 		return (
 			<div>
 				<header className={this.mobileHeaderState + ' header'}>
