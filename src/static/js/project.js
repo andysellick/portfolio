@@ -49,9 +49,7 @@ var ProjectBlock = React.createClass({
 		);
 	},	
     render: function(){
-		console.log('projects props',this.props.onpage);
 		var projects = this.props.projects.slice(this.props.onpage * this.props.perpage,(this.props.onpage * this.props.perpage) + this.props.perpage);		
-		console.log('projects length',projects.length,this.props.projects.length,this.props.onpage);
 		return(projects.length > 0 ? this.showProjects(projects) : this.showNoProjects());
 	}
 });

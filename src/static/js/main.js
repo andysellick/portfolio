@@ -15,16 +15,14 @@ var ClientData = React.createClass({
 			matchingprojects: [], //this holds all of the projects that match the current filter/search state
 			filters: {}, //this holds all the possible filters
 			activeFilters: {}, //this holds chosen filters only
-			
 			popup: -1,
 			perpage: 12, //number of items to show per page
 			onpage: 0, //current page
 			resetstatus: 0, //if reset status is 0, reset button is disabled
 			searchtext: '',
-			
-			
-
 			mobileHeaderState: '', //controls visibility of mobile menu/search by applying a class
+			headerState: '', //controls visibility of header when popup open on mobile
+			mainState: '' //controls visibility of main element when popup open on mobile
 		};
 	},
 
@@ -136,7 +134,11 @@ var ClientData = React.createClass({
 
 	//handle the popup windows containing additional info about projects
 	showPopup: function(i) {
-		this.setState({ popup: i});
+		var newclass = '';
+		if(i !== -1){
+			newclass = 'mobile-hide';
+		}
+		this.setState({ popup: i, headerState: newclass, mainState: newclass});
 	},
 	
 	//go through all the projects and see if they match these chosen filters
@@ -165,7 +167,6 @@ var ClientData = React.createClass({
 	
 	//when a filter checkbox is clicked, set that filter accordingly
 	filterByTarget: function (clicked,filtertype,number){
-		//console.log('filterByTarget',filtertype,clicked,number);
 		var filters = this.state.filters;
 		filters[filtertype][number].checked = 1 - filters[filtertype][number].checked; //toggle the filter on or off
 		var clickedfilters = this.findAllClickedFilters();
@@ -187,7 +188,6 @@ var ClientData = React.createClass({
 		var name = e.target.name;
 		var onoroff = e.target.checked ? 1 : 0;
 		var filters = this.switchAllFilters(name,onoroff);
-		console.log(filters);
 
 		//add or remove this group of filters from active filters
 		var activeFilters = this.state.activeFilters;
@@ -240,6 +240,15 @@ var ClientData = React.createClass({
 		}
 		this.setState({searchtext: typed, matchingprojects: matchingprojects,onpage: onpage});
 	},	
+
+	//toggle general classes that control appearance of mobile menu, search
+	toggleMenuClasses: function(newclass){
+		var oldclass = this.state.mobileHeaderState;
+		if(oldclass === newclass){
+			newclass = '';
+		}
+		this.setState({mobileHeaderState: newclass});
+	},
 	
 	/* smaller functions that get used by other top level functions */
 	
@@ -267,60 +276,40 @@ var ClientData = React.createClass({
 		}
 		return(filters);
 	},
-	
-	/* FIXME all functions below this line (apart from render) are potentially unused and need updating or removing */
-		
-		
 
-	clearMobileMenus: function(){
-		/* fixme temporarily disabling
-		this.mobileHeaderState = '';
-		this.forceUpdate();
-		*/
-	},
-	
-	closeSearch: function(){
-		this.clearMobileMenus();
-		this.clearSearch();
-	},
-
-	//bring in the mobile header filter menu using a CSS change, hide the searchbox
-	showMobileMenu: function(e){
-		if(this.mobileHeaderState === 'showmenu'){
-			this.mobileHeaderState = '';
-		}
-		else {
-			this.mobileHeaderState = 'showmenu';
-		}
-		this.forceUpdate();
-	},
-
-	//bring in the mobile header searchbox using a CSS change, hide the filter menu
-	showMobileSearch: function(e){
-		this.mobileHeaderState = 'showsearch';
-		this.forceUpdate();
-	},
-	
+/*	
 	//given that changing filters could reduce visible results below the current view position, need to reset it
 	resetPagePosition: function(){
 		this.state.onpage = 0;
 	},
-	
+*/
 	render: function() {
 		console.log('render');
 		var resetstatus = 1; //this value means the reset button is clickable
 		if((Object.keys(this.state.activeFilters).length === 0 && this.state.activeFilters.constructor === Object) && this.state.searchtext.length === 0){
 			resetstatus = 0;
 		}
-		//var onpage = Math.min(Math.ceil(this.state.matchingprojects.length / this.state.perpage),this.state.onpage);
-
 		return (
 			<div>
-				<header className={this.mobileHeaderState + ' header'}>
-					<HeaderBlock showing={this.state.matchingprojects.length} total={this.state.projects.length} showreset={resetstatus} resetall={this.resetAll} searchtext={this.state.searchtext} typeSearch={this.typeSearch}/>
-					<NavBlock filters={this.state.filters} onChange={this.filterByTarget} selectAll={this.selectAllFilter}/>
+				<header className={this.state.mobileHeaderState + ' ' + this.state.headerState + ' header'}>
+					<HeaderBlock 
+						showing={this.state.matchingprojects.length} 
+						total={this.state.projects.length} 
+						showreset={resetstatus} 
+						resetall={this.resetAll} 
+						searchtext={this.state.searchtext} 
+						typeSearch={this.typeSearch}
+						toggleMenuClasses={this.toggleMenuClasses}
+					/>
+					<NavBlock 
+						filters={this.state.filters} 
+						onChange={this.filterByTarget} 
+						selectAll={this.selectAllFilter}
+						showreset={resetstatus} 
+						resetall={this.resetAll} 
+					/>
 				</header>
-				<main className="main" onClick={this.clearMobileMenus}>
+				<main className={this.state.mainState + ' main'} onClick={this.toggleMenuClasses.bind(null,'')}>
 					<div className="container">
 						<ActiveFiltersBlock filters={this.state.activeFilters} clearFilter={this.clearFilter}/>						
 						<PaginationBlock length={this.state.matchingprojects.length} onpage={this.state.onpage} perpage={this.state.perpage} changePage={this.changePage}/>																	

@@ -1,8 +1,6 @@
 import React from 'react';
 
 var NavBlock = React.createClass({displayName: 'NavBlock',
-	resetAll: function(){	
-	},
 	selectAllFilter: function(thisfilter){
 		this.props.selectAll(thisfilter);
 	},
@@ -43,7 +41,7 @@ var NavBlock = React.createClass({displayName: 'NavBlock',
 						)
 					})}
 					<li className="menuresetbtn mobile-only">
-						<span className='FIXME  btn btn-block center' onClick={self.resetAll}>Reset</span>
+						<span className={this.props.showreset ? 'btn-primary btn btn-block center' : 'disabled btn btn-block center'} onClick={this.props.resetall}>Reset</span>
 					</li>
 				</ul>
 			</nav>

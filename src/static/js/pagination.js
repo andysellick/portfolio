@@ -9,7 +9,6 @@ var PaginationBlock = React.createClass({
 	},
 	render: function(){
 		var onpage = Math.min(Math.ceil(this.props.length / this.props.perpage),this.props.onpage + 1);
-		//console.log('onpage',this.props.onpage,'length',this.props.length);
 		return(
 			<div className={this.props.length !== 0 ? 'pagination' : 'pagination hidden'}>
 				<span className="position">Page {onpage} of {Math.ceil(this.props.length / this.props.perpage)}</span>
