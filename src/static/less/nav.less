@@ -1,30 +1,30 @@
 /* --navigation */
 
 	.mainmenu {
-		background:@greyDark;
+		overflow:hidden;
+		&:hover {
+			overflow:visible;
+		}
 
 		.mainfilters {
-			display:table;
+			.flex;
+			.flex-direction(row);
+			.justify-content(space-between);
 			position:relative;
-			width:100%;
 			.container;
-			.clearfix;
 			.transition( transform @transpeed );
 		}
 		.filteritem {
-			display:table-cell;
-
 			.droptrigger {
 				position:relative;
 				z-index:1;
 				display:block;
 				padding:0.5em 0;
 				text-align:center;
-				.font-montserratlight();
 				color:@white;
 				text-transform:uppercase;
 				font-weight:bold;
-				.fontcalculate(14);
+				.fontcalculate(13);
 				cursor:pointer;
 				.noselect();
 
@@ -32,7 +32,7 @@
 					display:inline-block;
 					padding:0.3em 0;
 					border-bottom:solid 4px @greyDark;
-					.transition( border @transpeed );
+					.transition( border @transpeed / 2 );
 				}
   				&:before,
   				&:after {
@@ -74,12 +74,6 @@
 			}
 
 			.dropcontent {
-				display: -webkit-flex;
-				display: flex;
-				-webkit-flex-wrap: wrap;
-				flex-wrap: wrap;
-				-webkit-flex-direction:column;
-				flex-direction:column;
 				position:absolute;
 				z-index:-1;
 				top:100%;
@@ -87,6 +81,7 @@
 				width:100%;
 				padding:20px 10px;
 				padding-bottom:50px;
+				.column-count(4);
 				.border-box;
 				background:@white;
 				border-top:0;
@@ -98,22 +93,22 @@
 				.filterlabel {
 					position:relative;
 					display:block;
-					width:100% / 4;
 					padding:0.3em 0.5em;
 					padding-left:20px;
+					.break-inside();
 					.border-box;
 					cursor:pointer;
 					text-transform:capitalize;
-					.font-sourceregular();
 					.fontcalculate( 14 );
 					color:@greyDark;
 					.noselect();
 					
-					/* this doesn't work in chrome, so we fallback to the max-height on the parent */
+					/* this doesn't work in chrome, so we fallback to the max-height on the parent
 					&.newcolumn {
 						break-before:always;
 						page-break-before: always;
 					}
+					*/
 
 					input {
 						position:absolute;
@@ -149,8 +144,8 @@
 	.pagination {
 		margin-bottom:20px;
 		text-align:right;
-		.btn {
-			margin-left:0.5em;
+		.spacer {
+			margin-right:0.5em;
 		}
 	}
 
@@ -164,6 +159,9 @@
 				&:after {
 					.transform( rotate(40deg) );
 				}
+			}
+			.dropcontent {
+				.column-count(3);
 			}
 		}
 	}
@@ -215,11 +213,11 @@
 				z-index:-1;
 				left:100%;
 				top:0;
-				max-height:none;
 				height:0;
 				overflow:hidden;
 				padding:20px 10px;
 				padding-top:60px;
+				.column-count(1);
 				.border-radius( 0 );
 				.transform( translateX(-100%) );
 				.transition( none );
