@@ -1,8 +1,25 @@
 [
 	{
+		"jobname"		:	"World War War",
+		"date"			:	"2017/04/14",
+		"desc"			:	"A game I wrote for fun. Pick a country and then fight with other countries (literally).",
+		"liveURL"		:	"http://www.custarddoughnuts.co.uk/worldwarwar",
+		"img"			:	"worldwarwar.jpg",
+		"filters"		:	{
+							"client"		:	["personal"],
+							"format"		:	["game"],
+							"designer"		:	["personal"],
+							"technology"	:	["matterjs","gulp"],
+							"year"			:	["2017"],
+							"workload"		:	["Sole developer"],
+							"type"			:	["personal"],
+							"status"		:	["live"]
+						}
+	},
+	{
 		"jobname"		:	"Seven Christmas Sins",
 		"date"			:	"2016/12/13",
-		"desc"			:	"A rapid turnaround for this Christmas themed seasonal quiz.",
+		"desc"			:	"This was a project to build a Christmas themed quiz, which was designed and built in less than a week.",
 		"liveURL"		:	"http://builtvisible.com/seven-christmas-sins/",
 		"img"			:	"sevenchristmassins.jpg",
 		"filters"		:	{
