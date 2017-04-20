@@ -284,7 +284,7 @@ var ClientData = React.createClass({
 		}
 		return (
 			<div>
-				<header className={this.state.mobileHeaderState + ' ' + this.state.headerState + ' header'}>
+				<header className={this.state.mobileHeaderState + ' ' + this.state.headerState + ' pheader'}>
 					<HeaderBlock 
 						showing={this.state.matchingprojects.length} 
 						total={this.state.projects.length} 
