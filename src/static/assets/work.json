@@ -315,7 +315,7 @@
 		"jobname"		:	"Moose on the Loose",
 		"date"			:	"2014/12/25",
 		"desc"			:	"<p>Or to give it its full title: 'Murray T. Moose in Moose on the Loose: Too Many Jumpers (a Murray T. Moose Game)'. A canvas game I built for Christmas, built on the code I wrote for 'Once'.</p>",
-		"liveURL"		:	"http://www.custarddoughnuts.co.uk/public/files/moose-on-the-loose/",
+		"liveURL"		:	"http://www.custarddoughnuts.co.uk/mooseontheloose/",
 		"moreURL"		:	"http://www.custarddoughnuts.co.uk/article/2014/12/21/a-christmas-game",
 		"img"			:	"mooseontheloose.jpg",
 		"filters"		:	{
